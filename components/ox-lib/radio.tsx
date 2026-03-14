@@ -247,130 +247,21 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
         {/* Backdrop */}
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
-        {/* Radio Panel - Compact */}
+        {/* Radio Panel - Compact with Fixed Height */}
         <div
-          className="relative w-[260px] bg-[rgba(22,22,26,0.95)] border border-white/[0.08] rounded-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300"
+          className="relative w-[260px] h-[420px] bg-[rgba(22,22,26,0.95)] border border-white/[0.08] rounded-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300"
           style={{
             boxShadow: "0 25px 60px -12px rgba(0,0,0,0.6), 0 0 40px -10px rgba(255,255,255,0.05)",
           }}
         >
           {/* Glass reflection */}
-          <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/[0.06] to-transparent pointer-events-none rounded-t-2xl" />
+          <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/[0.06] to-transparent pointer-events-none rounded-t-2xl z-10" />
 
-          {showSettings ? (
-            /* Settings View */
-            <>
-              <div className="relative flex items-center gap-3 px-4 py-3 border-b border-white/[0.08]">
-                <button
-                  onClick={() => setShowSettings(false)}
-                  className="w-7 h-7 flex items-center justify-center rounded-md text-white/40 hover:text-white/90 hover:bg-white/[0.06] transition-all"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <h2 className="text-sm font-semibold text-white/95">Configuracion</h2>
-              </div>
-
-              <div className="p-4 space-y-4">
-                {/* Display Name */}
-                <div>
-                  <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-white/40 mb-2">
-                    <User className="w-3 h-3" />
-                    Nombre Visible
-                  </label>
-                  <input
-                    type="text"
-                    value={config.displayName}
-                    onChange={(e) => setConfig({ ...config, displayName: e.target.value })}
-                    className="w-full px-3 py-2 bg-black/30 border border-white/[0.08] rounded-lg text-sm text-white/90 placeholder:text-white/20 focus:outline-none focus:border-white/30 transition-all"
-                    placeholder="Tu nombre"
-                  />
-                </div>
-
-                {/* Leader Toggle */}
-                <div>
-                  <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-white/40 mb-2">
-                    <Crown className="w-3 h-3" />
-                    Modo Lider
-                  </label>
-                  <button
-                    onClick={() => setConfig({ ...config, isLeader: !config.isLeader })}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg border transition-all ${
-                      config.isLeader
-                        ? "bg-white/[0.1] border-white/20"
-                        : "bg-black/30 border-white/[0.08] hover:bg-white/[0.05]"
-                    }`}
-                  >
-                    <span className="text-sm text-white/70">Soy lider del canal</span>
-                    <div
-                      className={`w-10 h-5 rounded-full transition-all ${
-                        config.isLeader ? "bg-emerald-500" : "bg-white/10"
-                      }`}
-                    >
-                      <div
-                        className={`w-4 h-4 mt-0.5 rounded-full bg-white shadow transition-all ${
-                          config.isLeader ? "ml-5" : "ml-0.5"
-                        }`}
-                      />
-                    </div>
-                  </button>
-                </div>
-
-                {/* Leader Color */}
-                {config.isLeader && (
-                  <>
-                    <div>
-                      <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-white/40 mb-2">
-                        <Palette className="w-3 h-3" />
-                        Color de Lider
-                      </label>
-                      <div className="flex gap-2 flex-wrap">
-                        {leaderColors.map((c) => (
-                          <button
-                            key={c.id}
-                            onClick={() => setConfig({ ...config, leaderColor: c.color })}
-                            className={`w-8 h-8 rounded-lg transition-all ${
-                              config.leaderColor === c.color
-                                ? "ring-2 ring-white/50 scale-110"
-                                : "hover:scale-105"
-                            }`}
-                            style={{ backgroundColor: c.color }}
-                            title={c.name}
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Leader Icon */}
-                    <div>
-                      <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-white/40 mb-2">
-                        Icono de Lider
-                      </label>
-                      <div className="flex gap-2">
-                        {(Object.keys(leaderIcons) as Array<keyof typeof leaderIcons>).map((iconKey) => {
-                          const Icon = leaderIcons[iconKey]
-                          return (
-                            <button
-                              key={iconKey}
-                              onClick={() => setConfig({ ...config, leaderIcon: iconKey })}
-                              className={`w-10 h-10 flex items-center justify-center rounded-lg border transition-all ${
-                                config.leaderIcon === iconKey
-                                  ? "bg-white/[0.1] border-white/30"
-                                  : "bg-black/30 border-white/[0.08] hover:bg-white/[0.05]"
-                              }`}
-                            >
-                              <Icon className="w-5 h-5" style={{ color: config.leaderColor }} />
-                            </button>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            </>
-          ) : (
-            /* Main Radio View */
-            <>
+          {/* Content Container with Slide Animation */}
+          <div className="relative w-[520px] h-full flex transition-transform duration-300 ease-out" style={{ transform: showSettings ? 'translateX(-260px)' : 'translateX(0)' }}>
+            
+            {/* Main Radio View - First Panel */}
+            <div className="w-[260px] h-full flex-shrink-0 flex flex-col">
               {/* Header */}
               <div className="relative flex items-center gap-2 px-3 py-3 border-b border-white/[0.08]">
                 <div className="w-7 h-7 flex items-center justify-center bg-white/[0.08] rounded-lg">
@@ -505,7 +396,7 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
               </div>
 
               {/* Footer Actions - Compact */}
-              <div className="flex gap-2 px-3 py-2.5 bg-black/20">
+              <div className="flex gap-2 px-3 py-2.5 bg-black/20 mt-auto">
                 <button
                   onClick={() => setIsMuted(!isMuted)}
                   className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg border text-[10px] font-medium transition-all ${
@@ -525,8 +416,151 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
                   <span>Desconectar</span>
                 </button>
               </div>
-            </>
-          )}
+            </div>
+
+            {/* Settings View - Second Panel */}
+            <div className="w-[260px] h-full flex-shrink-0 flex flex-col">
+              <div className="relative flex items-center gap-3 px-4 py-3 border-b border-white/[0.08]">
+                <button
+                  onClick={() => setShowSettings(false)}
+                  className="w-7 h-7 flex items-center justify-center rounded-md text-white/40 hover:text-white/90 hover:bg-white/[0.06] transition-all active:scale-95"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <h2 className="text-sm font-semibold text-white/95">Configuracion</h2>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {/* Display Name */}
+                <div className="animate-in fade-in slide-in-from-right-2 duration-200" style={{ animationDelay: '50ms' }}>
+                  <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-white/40 mb-2">
+                    <User className="w-3 h-3" />
+                    Nombre Visible
+                  </label>
+                  <input
+                    type="text"
+                    value={config.displayName}
+                    onChange={(e) => setConfig({ ...config, displayName: e.target.value })}
+                    className="w-full px-3 py-2 bg-black/30 border border-white/[0.08] rounded-lg text-sm text-white/90 placeholder:text-white/20 focus:outline-none focus:border-white/30 transition-all"
+                    placeholder="Tu nombre"
+                  />
+                </div>
+
+                {/* Leader Toggle */}
+                <div className="animate-in fade-in slide-in-from-right-2 duration-200" style={{ animationDelay: '100ms' }}>
+                  <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-white/40 mb-2">
+                    <Crown className="w-3 h-3" />
+                    Modo Lider
+                  </label>
+                  <button
+                    onClick={() => setConfig({ ...config, isLeader: !config.isLeader })}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg border transition-all duration-200 ${
+                      config.isLeader
+                        ? "bg-white/[0.1] border-white/20"
+                        : "bg-black/30 border-white/[0.08] hover:bg-white/[0.05]"
+                    }`}
+                  >
+                    <span className="text-sm text-white/70">Soy lider del canal</span>
+                    <div
+                      className={`w-10 h-5 rounded-full transition-all duration-200 ${
+                        config.isLeader ? "bg-emerald-500" : "bg-white/10"
+                      }`}
+                    >
+                      <div
+                        className={`w-4 h-4 mt-0.5 rounded-full bg-white shadow-lg transition-all duration-200 ${
+                          config.isLeader ? "ml-5" : "ml-0.5"
+                        }`}
+                      />
+                    </div>
+                  </button>
+                </div>
+
+                {/* Leader Color */}
+                <div 
+                  className={`space-y-4 transition-all duration-300 overflow-hidden ${
+                    config.isLeader ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="animate-in fade-in slide-in-from-right-2 duration-200" style={{ animationDelay: '150ms' }}>
+                    <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-white/40 mb-2">
+                      <Palette className="w-3 h-3" />
+                      Color de Lider
+                    </label>
+                    <div className="flex gap-2 flex-wrap">
+                      {leaderColors.map((c) => (
+                        <button
+                          key={c.id}
+                          onClick={() => setConfig({ ...config, leaderColor: c.color })}
+                          className={`w-8 h-8 rounded-lg transition-all duration-200 ${
+                            config.leaderColor === c.color
+                              ? "ring-2 ring-white/50 scale-110"
+                              : "hover:scale-105"
+                          }`}
+                          style={{ backgroundColor: c.color }}
+                          title={c.name}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Leader Icon */}
+                  <div className="animate-in fade-in slide-in-from-right-2 duration-200" style={{ animationDelay: '200ms' }}>
+                    <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-white/40 mb-2">
+                      Icono de Lider
+                    </label>
+                    <div className="flex gap-2">
+                      {(Object.keys(leaderIcons) as Array<keyof typeof leaderIcons>).map((iconKey) => {
+                        const Icon = leaderIcons[iconKey]
+                        return (
+                          <button
+                            key={iconKey}
+                            onClick={() => setConfig({ ...config, leaderIcon: iconKey })}
+                            className={`w-10 h-10 flex items-center justify-center rounded-lg border transition-all duration-200 ${
+                              config.leaderIcon === iconKey
+                                ? "bg-white/[0.1] border-white/30 scale-105"
+                                : "bg-black/30 border-white/[0.08] hover:bg-white/[0.05] hover:scale-105"
+                            }`}
+                          >
+                            <Icon className="w-5 h-5 transition-colors duration-200" style={{ color: config.leaderColor }} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Preview Section */}
+                <div className="animate-in fade-in slide-in-from-right-2 duration-200 pt-2" style={{ animationDelay: '250ms' }}>
+                  <label className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-white/40 mb-2">
+                    Vista Previa
+                  </label>
+                  <div className="p-3 bg-black/30 border border-white/[0.08] rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition-all duration-200"
+                        style={{
+                          backgroundColor: config.isLeader ? `${config.leaderColor}20` : "rgba(255,255,255,0.08)",
+                          color: config.isLeader ? config.leaderColor : "rgba(255,255,255,0.5)",
+                        }}
+                      >
+                        {config.isLeader ? (
+                          <LeaderIcon className="w-4 h-4" />
+                        ) : (
+                          getInitials(config.displayName)
+                        )}
+                      </div>
+                      <span
+                        className="text-sm font-medium transition-colors duration-200"
+                        style={{ color: config.isLeader ? config.leaderColor : "rgba(255,255,255,0.7)" }}
+                      >
+                        {config.displayName || "Tu Nombre"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
