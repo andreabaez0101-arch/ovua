@@ -212,7 +212,7 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
             <span>Volumen</span>
             <span className="ml-auto font-semibold text-white/90 tabular-nums">{volume}%</span>
           </div>
-          <div className="relative h-2 group">
+          <div className="relative h-1.5">
             <input
               type="range"
               min="0"
@@ -220,15 +220,11 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
               value={volume}
               onChange={(e) => setVolume(Number(e.target.value))}
               onInput={(e) => setVolume(Number((e.target as HTMLInputElement).value))}
-              className="absolute inset-0 w-full h-full cursor-pointer z-10 appearance-none bg-transparent
-                [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-white/[0.08]
-                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:-mt-1 [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform
-                [&::-moz-range-track]:h-2 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-white/[0.08]
-                [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:shadow-lg [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:active:cursor-grabbing"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
             />
-            <div className="absolute inset-0 bg-white/[0.08] rounded-full overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 bg-white/[0.08] rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-white/30 to-white/80 rounded-full"
+                className="h-full bg-gradient-to-r from-white/10 to-white/70 rounded-full"
                 style={{ width: `${volume}%` }}
               />
             </div>
