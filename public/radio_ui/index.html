@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" style="background: transparent !important;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio UI - FiveM</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* FiveM NUI Transparency Fix */
+    html, body {
+      background: transparent !important;
+      background-color: transparent !important;
+    }
+  </style>
+</head>
+<body style="background: transparent !important;">
+
+  <!-- Radio UI Container -->
+  <div id="radio-container" class="radio-container">
+    <div class="radio-panel">
+      <!-- Header -->
+      <div class="radio-header">
+        <div class="radio-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 6V2m0 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>
+            <path d="M6.34 6.34l-2.83-2.83m17 0l-2.83 2.83M4 12H2m20 0h-2"/>
+            <path d="M12 14v8"/>
+            <path d="M8 18h8"/>
+          </svg>
+        </div>
+        <div class="radio-title">
+          <span class="radio-label">COMUNICACIONES</span>
+          <h2>Radio</h2>
+        </div>
+        <button class="radio-close" onclick="Radio.close()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Channel Display -->
+      <div class="channel-display">
+        <div class="channel-status">
+          <span class="status-indicator active"></span>
+          <span class="status-text">Conectado</span>
+        </div>
+        <div class="channel-number" id="channel-number">001</div>
+        <div class="channel-name" id="channel-name">Canal Principal</div>
+      </div>
+
+      <!-- Channel Controls -->
+      <div class="channel-controls">
+        <button class="channel-btn" onclick="Radio.changeChannel(-1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <div class="channel-input-wrapper">
+          <input type="text" class="channel-input" id="channel-input" placeholder="001" maxlength="3" onkeypress="Radio.handleChannelInput(event)">
+          <span class="channel-input-hint">Ingresa canal</span>
+        </div>
+        <button class="channel-btn" onclick="Radio.changeChannel(1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Volume Control -->
+      <div class="volume-section">
+        <div class="volume-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <span>Volumen</span>
+          <span class="volume-value" id="volume-value">75%</span>
+        </div>
+        <div class="volume-slider-wrapper">
+          <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="75" oninput="Radio.setVolume(this.value)">
+          <div class="volume-track">
+            <div class="volume-fill" id="volume-fill" style="width: 75%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Channels -->
+      <div class="quick-channels">
+        <span class="quick-label">Canales Rapidos</span>
+        <div class="quick-list">
+          <button class="quick-btn active" onclick="Radio.quickChannel(1)">001</button>
+          <button class="quick-btn" onclick="Radio.quickChannel(2)">002</button>
+          <button class="quick-btn" onclick="Radio.quickChannel(3)">003</button>
+          <button class="quick-btn" onclick="Radio.quickChannel(4)">004</button>
+        </div>
+      </div>
+
+      <!-- Talk Button -->
+      <div class="talk-section">
+        <button class="talk-btn" id="talk-btn" onmousedown="Radio.startTalk()" onmouseup="Radio.endTalk()" ontouchstart="Radio.startTalk()" ontouchend="Radio.endTalk()">
+          <div class="talk-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <path d="M12 19v4"/>
+              <path d="M8 23h8"/>
+            </svg>
+          </div>
+          <span class="talk-text">Mantener para Hablar</span>
+          <span class="talk-key">[N]</span>
+        </button>
+      </div>
+
+      <!-- Members Online -->
+      <div class="members-section">
+        <div class="members-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>En este canal</span>
+          <span class="members-count" id="members-count">3</span>
+        </div>
+        <div class="members-list" id="members-list">
+          <div class="member-item">
+            <div class="member-avatar">JD</div>
+            <span class="member-name">John Doe</span>
+            <span class="member-status talking">Hablando</span>
+          </div>
+          <div class="member-item">
+            <div class="member-avatar">MJ</div>
+            <span class="member-name">Maria Johnson</span>
+            <span class="member-status">En linea</span>
+          </div>
+          <div class="member-item self">
+            <div class="member-avatar">TU</div>
+            <span class="member-name">Tu (ID: 15)</span>
+            <span class="member-status">En linea</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="radio-footer">
+        <button class="footer-btn" onclick="Radio.toggleMute()">
+          <svg id="mute-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+          <span id="mute-text">Silenciar</span>
+        </button>
+        <button class="footer-btn danger" onclick="Radio.disconnect()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+            <line x1="12" y1="2" x2="12" y2="12"/>
+          </svg>
+          <span>Desconectar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo Controls (for testing only) -->
+  <div class="demo-panel">
+    <h3>Radio UI Demo</h3>
+    <div class="demo-buttons">
+      <button class="demo-btn" onclick="Radio.toggle()">Toggle Radio</button>
+      <button class="demo-btn" onclick="Radio.simulateTalk()">Simular Hablar</button>
+      <button class="demo-btn" onclick="Radio.addMember()">Agregar Miembro</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
