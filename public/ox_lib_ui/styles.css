@@ -2032,15 +2032,15 @@ textarea.input-field {
   position: relative;
   width: 420px;
   max-height: 80vh;
-  background: linear-gradient(180deg, rgba(20, 24, 32, 0.95) 0%, rgba(12, 14, 20, 0.98) 100%);
-  border: 1px solid rgba(100, 140, 180, 0.15);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-2xl);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   box-shadow: 
-    0 25px 80px -20px rgba(0, 0, 0, 0.8),
-    0 0 0 1px rgba(100, 140, 180, 0.05) inset,
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    var(--shadow-lg),
+    var(--shadow-glow),
+    inset 0 1px 0 var(--glass-reflection);
   animation: scaleIn 0.35s var(--ease-out-expo);
   overflow: hidden;
   display: flex;
@@ -2051,14 +2051,14 @@ textarea.input-field {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(100, 140, 180, 0.03) 0%, transparent 30%);
+  background: linear-gradient(180deg, var(--glass-reflection) 0%, transparent 30%);
   pointer-events: none;
 }
 
 .multichar-header {
   position: relative;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(100, 140, 180, 0.1);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .multichar-label {
@@ -2067,14 +2067,14 @@ textarea.input-field {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(140, 160, 180, 0.6);
+  color: var(--text-muted);
   margin-bottom: 0.25rem;
 }
 
 .multichar-header h2 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: rgba(200, 210, 220, 0.95);
+  color: var(--text-primary);
 }
 
 .multichar-list {
@@ -2097,7 +2097,7 @@ textarea.input-field {
 }
 
 .multichar-list::-webkit-scrollbar-thumb {
-  background: rgba(100, 140, 180, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
 }
 
@@ -2105,11 +2105,11 @@ textarea.input-field {
 .character-card {
   position: relative;
   padding: 1rem;
-  background: linear-gradient(135deg, rgba(30, 40, 55, 0.8) 0%, rgba(20, 28, 40, 0.9) 100%);
-  border: 1px solid rgba(100, 140, 180, 0.12);
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s var(--ease-out-quart);
 }
 
 .character-card::before {
@@ -2117,21 +2117,21 @@ textarea.input-field {
   position: absolute;
   inset: 0;
   border-radius: var(--radius-xl);
-  background: linear-gradient(180deg, rgba(100, 140, 180, 0.02) 0%, transparent 50%);
+  background: linear-gradient(180deg, var(--glass-reflection) 0%, transparent 50%);
   pointer-events: none;
 }
 
 .character-card:hover {
-  background: linear-gradient(135deg, rgba(40, 55, 75, 0.85) 0%, rgba(25, 35, 50, 0.9) 100%);
-  border-color: rgba(100, 140, 180, 0.2);
+  background: rgba(40, 40, 46, 0.95);
+  border-color: var(--glass-border-hover);
 }
 
 .character-card.selected {
-  background: linear-gradient(135deg, rgba(50, 80, 120, 0.5) 0%, rgba(30, 50, 80, 0.6) 100%);
-  border-color: rgba(80, 140, 200, 0.5);
+  background: rgba(192, 192, 192, 0.08);
+  border-color: rgba(192, 192, 192, 0.3);
   box-shadow: 
-    0 0 20px rgba(80, 140, 200, 0.15),
-    inset 0 0 30px rgba(80, 140, 200, 0.05);
+    0 0 20px rgba(192, 192, 192, 0.08),
+    inset 0 0 30px rgba(192, 192, 192, 0.02);
 }
 
 .character-card-header {
@@ -2145,12 +2145,12 @@ textarea.input-field {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, rgba(80, 120, 160, 0.3) 0%, rgba(60, 90, 130, 0.4) 100%);
-  border: 1px solid rgba(100, 140, 180, 0.2);
+  background: var(--accent-silver-bg);
+  border: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(150, 180, 210, 0.7);
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
@@ -2160,9 +2160,9 @@ textarea.input-field {
 }
 
 .character-card.selected .character-avatar {
-  background: linear-gradient(135deg, rgba(80, 140, 200, 0.4) 0%, rgba(60, 110, 170, 0.5) 100%);
-  border-color: rgba(80, 140, 200, 0.4);
-  color: rgba(180, 210, 240, 0.9);
+  background: rgba(192, 192, 192, 0.15);
+  border-color: rgba(192, 192, 192, 0.25);
+  color: var(--accent-silver);
 }
 
 .character-name {
@@ -2172,7 +2172,7 @@ textarea.input-field {
 .character-name h3 {
   font-size: 0.9375rem;
   font-weight: 500;
-  color: rgba(200, 215, 230, 0.95);
+  color: var(--text-primary);
 }
 
 .character-tags {
@@ -2185,24 +2185,28 @@ textarea.input-field {
   display: inline-flex;
   align-items: center;
   padding: 0.3125rem 0.625rem;
-  background: rgba(50, 70, 95, 0.6);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 9999px;
   font-size: 0.6875rem;
   transition: all 0.2s ease;
 }
 
 .character-tag-label {
-  color: rgba(140, 165, 190, 0.8);
+  color: var(--text-muted);
   font-weight: 500;
   margin-right: 0.25rem;
 }
 
 .character-tag-value {
-  color: rgba(200, 215, 230, 0.9);
+  color: var(--text-secondary);
 }
 
 .character-card.selected .character-tag {
-  background: rgba(60, 90, 130, 0.6);
+  background: rgba(192, 192, 192, 0.08);
+}
+
+.character-card.selected .character-tag-value {
+  color: var(--text-primary);
 }
 
 /* Multichar Actions */
@@ -2211,8 +2215,8 @@ textarea.input-field {
   display: flex;
   gap: 0.75rem;
   padding: 1rem 1.25rem;
-  border-top: 1px solid rgba(100, 140, 180, 0.1);
-  background: rgba(15, 20, 28, 0.5);
+  border-top: 1px solid var(--glass-border);
+  background: rgba(10, 10, 12, 0.5);
 }
 
 .btn-multichar-play {
@@ -2222,21 +2226,22 @@ textarea.input-field {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 1.5rem;
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.85) 0%, rgba(22, 163, 74, 0.9) 100%);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(160, 160, 160, 0.15) 100%);
+  border: 1px solid rgba(192, 192, 192, 0.25);
   border-radius: var(--radius-xl);
   font-size: 0.875rem;
   font-weight: 600;
   font-family: inherit;
-  color: white;
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.25);
+  transition: all 0.3s var(--ease-out-quart);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-multichar-play:hover {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.95) 0%, rgba(22, 163, 74, 1) 100%);
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.3) 0%, rgba(160, 160, 160, 0.25) 100%);
+  border-color: rgba(192, 192, 192, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px);
 }
 
@@ -2255,21 +2260,21 @@ textarea.input-field {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 1.25rem;
-  background: rgba(60, 80, 110, 0.4);
-  border: 1px solid rgba(100, 140, 180, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
   font-size: 0.875rem;
   font-weight: 500;
   font-family: inherit;
-  color: rgba(180, 200, 220, 0.8);
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s var(--ease-out-quart);
 }
 
 .btn-multichar-new:hover {
-  background: rgba(70, 95, 130, 0.5);
-  border-color: rgba(100, 140, 180, 0.3);
-  color: rgba(200, 215, 230, 0.95);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--glass-border-hover);
+  color: var(--text-primary);
 }
 
 .btn-multichar-new:active {
