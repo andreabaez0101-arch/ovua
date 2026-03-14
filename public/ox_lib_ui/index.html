@@ -218,6 +218,31 @@
     </div>
   </div>
 
+  <!-- Qbox Multichar -->
+  <div id="multichar-container" class="dialog-overlay hidden">
+    <div class="multichar-glass">
+      <div class="multichar-header">
+        <span class="multichar-label">QUICK ACTIONS</span>
+        <h2 id="multichar-title">Qbox Multichar</h2>
+      </div>
+      <div class="multichar-list" id="multichar-list"></div>
+      <div class="multichar-actions">
+        <button class="btn-multichar-play" onclick="playSelectedCharacter()">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <span>Play</span>
+        </button>
+        <button class="btn-multichar-new" onclick="createNewCharacter()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          <span>New Character</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Radial Menu -->
   <div id="radial-menu" class="radial-overlay hidden">
     <div class="radial-container">
@@ -313,6 +338,17 @@
             </svg>
           </div>
           <span>Menu List</span>
+        </button>
+        <button class="demo-btn" onclick="showMulticharDemo()">
+          <div class="demo-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <span>Multichar</span>
         </button>
       </div>
       <div class="demo-info">

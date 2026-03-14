@@ -1126,6 +1126,14 @@ window.addEventListener('message', (event) => {
     case 'closeRadial':
       RadialMenu.close();
       break;
+      
+    // Qbox Multichar
+    case 'openMultichar':
+      Multichar.open(data);
+      break;
+    case 'closeMultichar':
+      Multichar.close();
+      break;
   }
 });
 
@@ -1244,6 +1252,213 @@ function showMenuDemo() {
 }
 
 // ============================================
+// QBOX MULTICHAR SYSTEM
+// ============================================
+const Multichar = {
+  element: null,
+  listContainer: null,
+  isOpen: false,
+  characters: [],
+  selectedId: null,
+
+  init() {
+    this.element = document.getElementById('multichar-container');
+    this.listContainer = document.getElementById('multichar-list');
+    this.setupKeyboardNavigation();
+  },
+
+  open(data) {
+    const { title = 'Qbox Multichar', characters = [] } = data;
+    this.characters = characters;
+    this.selectedId = characters[0]?.citizenid || null;
+    
+    document.getElementById('multichar-title').textContent = title;
+    this.renderCharacters();
+    
+    this.element.classList.remove('hidden');
+    this.isOpen = true;
+  },
+
+  renderCharacters() {
+    this.listContainer.innerHTML = '';
+    
+    this.characters.forEach((char) => {
+      const isSelected = char.citizenid === this.selectedId;
+      const card = document.createElement('div');
+      card.className = `character-card ${isSelected ? 'selected' : ''}`;
+      card.dataset.id = char.citizenid;
+      
+      // Build tags from character data
+      const tags = [];
+      if (char.charinfo) {
+        if (char.charinfo.account) tags.push({ label: 'Account Number:', value: char.charinfo.account });
+        if (char.money?.bank !== undefined) tags.push({ label: 'Bank:', value: char.money.bank.toLocaleString() });
+        if (char.charinfo.birthdate) tags.push({ label: 'Birthdate:', value: char.charinfo.birthdate });
+        if (char.money?.cash !== undefined) tags.push({ label: 'Cash:', value: char.money.cash.toLocaleString() });
+        if (char.charinfo.gang) tags.push({ label: 'Gang:', value: char.charinfo.gang || 'No Gang' });
+        if (char.charinfo.ganggrade) tags.push({ label: 'Gang Grade:', value: char.charinfo.ganggrade || 'Unaffiliated' });
+        if (char.charinfo.gender !== undefined) tags.push({ label: 'Gender:', value: char.charinfo.gender === 0 ? 'Male' : 'Female' });
+        if (char.job?.label) tags.push({ label: 'Job:', value: char.job.label || 'Civilian' });
+        if (char.job?.grade?.name) tags.push({ label: 'Job Grade:', value: char.job.grade.name || 'Freelancer' });
+        if (char.charinfo.firstname && char.charinfo.lastname) {
+          tags.push({ label: 'Name:', value: `${char.charinfo.firstname} ${char.charinfo.lastname}` });
+        }
+        if (char.charinfo.nationality) tags.push({ label: 'Nationality:', value: char.charinfo.nationality });
+        if (char.charinfo.phone) tags.push({ label: 'Phone Number:', value: char.charinfo.phone });
+      }
+      
+      const tagsHtml = tags.map(tag => `
+        <span class="character-tag">
+          <span class="character-tag-label">${tag.label}</span>
+          <span class="character-tag-value">${tag.value}</span>
+        </span>
+      `).join('');
+      
+      const displayName = char.charinfo ? 
+        `${char.charinfo.firstname || ''} ${char.charinfo.lastname || ''}`.trim() || 'Unknown' : 
+        'Unknown';
+      
+      card.innerHTML = `
+        <div class="character-card-header">
+          <div class="character-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <div class="character-name">
+            <h3>${displayName} - ${char.citizenid || 'N/A'}</h3>
+          </div>
+        </div>
+        <div class="character-tags">${tagsHtml}</div>
+      `;
+      
+      card.addEventListener('click', () => this.selectCharacter(char.citizenid));
+      this.listContainer.appendChild(card);
+    });
+  },
+
+  selectCharacter(id) {
+    this.selectedId = id;
+    this.updateSelection();
+  },
+
+  updateSelection() {
+    const cards = this.listContainer.querySelectorAll('.character-card');
+    cards.forEach(card => {
+      card.classList.toggle('selected', card.dataset.id === this.selectedId);
+    });
+  },
+
+  play() {
+    if (this.selectedId) {
+      const character = this.characters.find(c => c.citizenid === this.selectedId);
+      this.close();
+      this.sendNUI('multichar:play', { citizenid: this.selectedId, character });
+    }
+  },
+
+  createNew() {
+    this.close();
+    this.sendNUI('multichar:create');
+  },
+
+  close() {
+    this.element.classList.add('hidden');
+    this.isOpen = false;
+    this.sendNUI('multichar:close');
+  },
+
+  setupKeyboardNavigation() {
+    document.addEventListener('keydown', (e) => {
+      if (!this.isOpen) return;
+      
+      const currentIdx = this.characters.findIndex(c => c.citizenid === this.selectedId);
+      
+      switch(e.key) {
+        case 'ArrowUp':
+        case 'w':
+        case 'W':
+          e.preventDefault();
+          if (currentIdx > 0) {
+            this.selectCharacter(this.characters[currentIdx - 1].citizenid);
+          }
+          break;
+        case 'ArrowDown':
+        case 's':
+        case 'S':
+          e.preventDefault();
+          if (currentIdx < this.characters.length - 1) {
+            this.selectCharacter(this.characters[currentIdx + 1].citizenid);
+          }
+          break;
+        case 'Enter':
+          e.preventDefault();
+          this.play();
+          break;
+        case 'Escape':
+          e.preventDefault();
+          this.close();
+          break;
+      }
+    });
+  },
+
+  sendNUI(event, data = {}) {
+    if (typeof GetParentResourceName === 'function') {
+      fetch(`https://${GetParentResourceName()}/${event}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).catch(() => {});
+    }
+  }
+};
+
+function playSelectedCharacter() { Multichar.play(); }
+function createNewCharacter() { Multichar.createNew(); }
+
+function showMulticharDemo() {
+  Multichar.open({
+    title: 'Qbox Multichar',
+    characters: [
+      {
+        citizenid: 'EM7N68J9',
+        charinfo: {
+          firstname: '1331',
+          lastname: '3131',
+          account: 'US04QBX3552213082',
+          birthdate: '2006-12-30',
+          gender: 0,
+          nationality: 'Albanian',
+          phone: '4691335868',
+          gang: 'No Gang',
+          ganggrade: 'Unaffiliated'
+        },
+        money: { bank: 4170, cash: 900 },
+        job: { label: 'Civilian', grade: { name: 'Freelancer' } }
+      },
+      {
+        citizenid: 'PQU1NT7S',
+        charinfo: {
+          firstname: 'Roman',
+          lastname: 'Pairce',
+          account: 'US05QBX8159939868',
+          birthdate: '2006-12-30',
+          gender: 0,
+          nationality: 'Afghan',
+          phone: '1343103786',
+          gang: 'No Gang',
+          ganggrade: 'Unaffiliated'
+        },
+        money: { bank: 44600, cash: 0 },
+        job: { label: 'Civilian', grade: { name: 'Freelancer' } }
+      }
+    ]
+  });
+}
+
+// ============================================
 // INITIALIZE ALL COMPONENTS
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -1256,6 +1471,7 @@ document.addEventListener('DOMContentLoaded', () => {
   TextUI.init();
   SkillCheck.init();
   RadialMenu.init();
+  Multichar.init();
 });
 
 // Helper function for FiveM
