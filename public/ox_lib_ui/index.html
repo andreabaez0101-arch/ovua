@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ox_lib UI - Liquid Glass</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Notification Container -->
+  <div id="notification-container" class="notification-container"></div>
+
+  <!-- Context Menu -->
+  <div id="context-menu" class="context-menu hidden">
+    <div class="context-glass">
+      <div class="context-header">
+        <h3>Quick Actions</h3>
+        <span class="context-subtitle">Select an option</span>
+      </div>
+      <div class="context-items" id="context-items"></div>
+      <div class="context-footer">
+        <span>ESC to close</span>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span>Online</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Dialog -->
+  <div id="input-dialog" class="dialog-overlay hidden">
+    <div class="dialog-glass input-dialog">
+      <div class="dialog-header">
+        <div class="dialog-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          </svg>
+        </div>
+        <div class="dialog-title-wrap">
+          <h2 id="input-title">Input Required</h2>
+          <p id="input-subtitle">Please fill in the details</p>
+        </div>
+        <button class="close-btn" onclick="closeInputDialog()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="dialog-content" id="input-fields"></div>
+      <div class="dialog-actions">
+        <button class="btn-secondary" onclick="closeInputDialog()">Cancel</button>
+        <button class="btn-primary" onclick="submitInputDialog()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div id="progress-container" class="progress-container hidden">
+    <div class="progress-glass">
+      <div class="progress-header">
+        <div class="progress-icon" id="progress-icon">
+          <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+        </div>
+        <div class="progress-info">
+          <h3 id="progress-title">Processing...</h3>
+          <p id="progress-subtitle">Please wait</p>
+        </div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+          <div class="progress-shimmer"></div>
+        </div>
+        <div class="progress-stats">
+          <span>Progress</span>
+          <span id="progress-percent">0%</span>
+        </div>
+      </div>
+      <div class="progress-hint">
+        Press <kbd>X</kbd> to cancel
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Dialog -->
+  <div id="alert-dialog" class="dialog-overlay hidden">
+    <div class="dialog-glass alert-dialog">
+      <div class="alert-icon" id="alert-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+      </div>
+      <h2 id="alert-title">Confirm Action</h2>
+      <p id="alert-message">Are you sure you want to proceed?</p>
+      <div class="dialog-actions">
+        <button class="btn-secondary" onclick="closeAlertDialog()">Cancel</button>
+        <button class="btn-danger" id="alert-confirm" onclick="confirmAlert()">Confirm</button>
+      </div>
+      <div class="alert-hint">
+        Press <kbd>ESC</kbd> to cancel
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu List -->
+  <div id="menu-container" class="dialog-overlay hidden">
+    <div class="menu-wrapper">
+      <div class="menu-glass">
+        <div class="menu-header">
+          <div class="menu-title-wrap">
+            <h2 id="menu-title">Menu</h2>
+            <p id="menu-subtitle">Select an option</p>
+          </div>
+          <button class="close-btn" onclick="closeMenu()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="menu-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input type="text" placeholder="Search..." id="menu-search-input" oninput="filterMenuItems()">
+        </div>
+        <div class="menu-items" id="menu-items"></div>
+        <div class="menu-footer">
+          <span id="menu-count">0 items</span>
+          <div class="nav-hint">
+            <span>Navigate</span>
+            <kbd>↑</kbd>
+            <kbd>↓</kbd>
+          </div>
+        </div>
+      </div>
+      <div class="menu-details hidden" id="menu-details">
+        <div class="details-preview">
+          <div class="details-icon-wrap">
+            <svg id="details-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"></svg>
+          </div>
+        </div>
+        <h3 id="details-title">-</h3>
+        <p id="details-description">-</p>
+        <div class="details-metadata" id="details-metadata"></div>
+        <div class="details-actions">
+          <button class="btn-primary" onclick="selectMenuItem()">Select</button>
+          <button class="btn-secondary" onclick="closeMenu()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Text UI -->
+  <div id="textui-container" class="textui-container"></div>
+
+  <!-- Skill Check -->
+  <div id="skillcheck-container" class="skillcheck-overlay hidden">
+    <div class="skillcheck-ring">
+      <svg viewBox="0 0 200 200" class="skillcheck-svg">
+        <!-- Background Ring -->
+        <circle cx="100" cy="100" r="85" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="16"/>
+        <!-- Target Zone -->
+        <path id="skillcheck-target" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="16" stroke-linecap="round"/>
+        <!-- Perfect Zone -->
+        <path id="skillcheck-perfect" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="16" stroke-linecap="round"/>
+        <!-- Indicator -->
+        <g id="skillcheck-indicator">
+          <circle cx="100" cy="15" r="8" fill="#a0a0a0"/>
+          <circle cx="100" cy="15" r="12" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+        </g>
+      </svg>
+      <div class="skillcheck-center">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+        </svg>
+        <span>Press SPACE</span>
+      </div>
+    </div>
+    <div class="skillcheck-hint">
+      <kbd>SPACE</kbd>
+      <span>to lock</span>
+    </div>
+  </div>
+
+  <!-- Radial Menu -->
+  <div id="radial-menu" class="radial-overlay hidden">
+    <div class="radial-container">
+      <div class="radial-center">
+        <span id="radial-label">Select</span>
+      </div>
+      <div class="radial-items" id="radial-items"></div>
+    </div>
+    <div class="radial-hint">
+      Press <kbd>ESC</kbd> to close
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
