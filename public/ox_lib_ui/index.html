@@ -17,8 +17,15 @@
   <div id="context-menu" class="context-menu hidden">
     <div class="context-glass">
       <div class="context-header">
-        <h3>Quick Actions</h3>
-        <span class="context-subtitle">Select an option</span>
+        <div class="context-header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </div>
+        <div class="context-header-text">
+          <h3 id="context-title">Quick Actions</h3>
+          <span class="context-subtitle">Select an option</span>
+        </div>
       </div>
       <div class="context-items" id="context-items"></div>
       <div class="context-footer">
@@ -37,12 +44,14 @@
       <div class="dialog-header">
         <div class="dialog-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+            <circle cx="7" cy="17" r="2"/>
+            <circle cx="17" cy="17" r="2"/>
           </svg>
         </div>
         <div class="dialog-title-wrap">
-          <h2 id="input-title">Input Required</h2>
-          <p id="input-subtitle">Please fill in the details</p>
+          <h2 id="input-title">Sell Vehicle</h2>
+          <p id="input-subtitle">Enter vehicle details</p>
         </div>
         <button class="close-btn" onclick="closeInputDialog()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -53,7 +62,7 @@
       <div class="dialog-content" id="input-fields"></div>
       <div class="dialog-actions">
         <button class="btn-secondary" onclick="closeInputDialog()">Cancel</button>
-        <button class="btn-primary" onclick="submitInputDialog()">Confirm</button>
+        <button class="btn-primary" onclick="submitInputDialog()">Confirm Sale</button>
       </div>
     </div>
   </div>
@@ -69,21 +78,15 @@
         </div>
         <div class="progress-info">
           <h3 id="progress-title">Processing...</h3>
-          <p id="progress-subtitle">Please wait</p>
+          <p id="progress-subtitle">Repairing vehicle</p>
         </div>
+        <span class="progress-percent-text" id="progress-percent">0%</span>
       </div>
       <div class="progress-bar-wrap">
         <div class="progress-bar">
           <div class="progress-fill" id="progress-fill"></div>
           <div class="progress-shimmer"></div>
         </div>
-        <div class="progress-stats">
-          <span>Progress</span>
-          <span id="progress-percent">0%</span>
-        </div>
-      </div>
-      <div class="progress-hint">
-        Press <kbd>X</kbd> to cancel
       </div>
     </div>
   </div>
@@ -97,10 +100,10 @@
         </svg>
       </div>
       <h2 id="alert-title">Confirm Action</h2>
-      <p id="alert-message">Are you sure you want to proceed?</p>
+      <p id="alert-message">Are you sure you want to sell this vehicle? This action cannot be undone and the vehicle will be permanently removed from your garage.</p>
       <div class="dialog-actions">
         <button class="btn-secondary" onclick="closeAlertDialog()">Cancel</button>
-        <button class="btn-danger" id="alert-confirm" onclick="confirmAlert()">Confirm</button>
+        <button class="btn-danger" id="alert-confirm" onclick="confirmAlert()">Confirm Sell</button>
       </div>
       <div class="alert-hint">
         Press <kbd>ESC</kbd> to cancel
@@ -114,8 +117,8 @@
       <div class="menu-glass">
         <div class="menu-header">
           <div class="menu-title-wrap">
-            <h2 id="menu-title">Menu</h2>
-            <p id="menu-subtitle">Select an option</p>
+            <h2 id="menu-title">Garage Menu</h2>
+            <p id="menu-subtitle">Legion Square Garage</p>
           </div>
           <button class="close-btn" onclick="closeMenu()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -127,41 +130,68 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
-          <input type="text" placeholder="Search..." id="menu-search-input" oninput="filterMenuItems()">
+          <input type="text" placeholder="Search vehicles..." id="menu-search-input" oninput="filterMenuItems()">
         </div>
         <div class="menu-items" id="menu-items"></div>
         <div class="menu-footer">
-          <span id="menu-count">0 items</span>
+          <span id="menu-count">0 vehicles</span>
           <div class="nav-hint">
-            <span>Navigate</span>
-            <kbd>↑</kbd>
-            <kbd>↓</kbd>
+            <span>Navigate with</span>
+            <kbd>W</kbd>
+            <kbd>S</kbd>
           </div>
         </div>
       </div>
       <div class="menu-details hidden" id="menu-details">
         <div class="details-preview">
           <div class="details-icon-wrap">
-            <svg id="details-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"></svg>
+            <svg id="details-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+              <circle cx="7" cy="17" r="2"/>
+              <circle cx="17" cy="17" r="2"/>
+            </svg>
           </div>
         </div>
-        <h3 id="details-title">-</h3>
-        <p id="details-description">-</p>
-        <div class="details-metadata" id="details-metadata"></div>
+        <h3 id="details-title">Lamborghini Aventador</h3>
+        <p id="details-description">Plate: ABC 123</p>
+        <div class="details-metadata" id="details-metadata">
+          <div class="details-stat">
+            <div class="details-stat-header">
+              <span>Speed</span>
+              <span id="stat-speed">95%</span>
+            </div>
+            <div class="details-stat-bar">
+              <div class="details-stat-fill speed" id="stat-speed-bar" style="width: 95%"></div>
+            </div>
+          </div>
+          <div class="details-stat">
+            <div class="details-stat-header">
+              <span>Handling</span>
+              <span id="stat-handling">88%</span>
+            </div>
+            <div class="details-stat-bar">
+              <div class="details-stat-fill handling" id="stat-handling-bar" style="width: 88%"></div>
+            </div>
+          </div>
+        </div>
         <div class="details-actions">
-          <button class="btn-primary" onclick="selectMenuItem()">Select</button>
-          <button class="btn-secondary" onclick="closeMenu()">Cancel</button>
+          <button class="btn-primary" onclick="spawnVehicle()">Spawn Vehicle</button>
+          <button class="btn-secondary" onclick="closeMenu()">Transfer</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Text UI -->
-  <div id="textui-container" class="textui-container"></div>
+  <div id="textui-container" class="textui-container">
+    <div class="textui-right" id="textui-right"></div>
+    <div class="textui-left" id="textui-left"></div>
+  </div>
 
   <!-- Skill Check -->
   <div id="skillcheck-container" class="skillcheck-overlay hidden">
     <div class="skillcheck-ring">
+      <div class="skillcheck-glow" id="skillcheck-glow"></div>
       <svg viewBox="0 0 200 200" class="skillcheck-svg">
         <!-- Background Ring -->
         <circle cx="100" cy="100" r="85" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="16"/>
@@ -171,15 +201,15 @@
         <path id="skillcheck-perfect" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="16" stroke-linecap="round"/>
         <!-- Indicator -->
         <g id="skillcheck-indicator">
-          <circle cx="100" cy="15" r="8" fill="#a0a0a0"/>
-          <circle cx="100" cy="15" r="12" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+          <circle cx="100" cy="15" r="8" fill="#a0a0a0" id="indicator-inner"/>
+          <circle cx="100" cy="15" r="12" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" id="indicator-outer"/>
         </g>
       </svg>
-      <div class="skillcheck-center">
+      <div class="skillcheck-center" id="skillcheck-center">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
         </svg>
-        <span>Press SPACE</span>
+        <span id="skillcheck-text">Press SPACE</span>
       </div>
     </div>
     <div class="skillcheck-hint">
@@ -198,6 +228,107 @@
     </div>
     <div class="radial-hint">
       Press <kbd>ESC</kbd> to close
+    </div>
+  </div>
+
+  <!-- Demo Control Panel (for testing - remove in production) -->
+  <div id="demo-panel" class="demo-panel">
+    <div class="demo-header">
+      <div class="demo-logo">
+        <span>X</span>
+      </div>
+      <div>
+        <h1>ox_lib</h1>
+        <p>Liquid Glass UI - iOS 26 Style</p>
+      </div>
+      <div class="demo-status">
+        <span class="demo-dot"></span>
+        <span>Preview Mode</span>
+      </div>
+    </div>
+    <div class="demo-content">
+      <h2>Complete UI Redesign</h2>
+      <p>All ox_lib interfaces redesigned with liquid glass aesthetics, smooth animations, and the silver-black color scheme.</p>
+      <div class="demo-grid">
+        <button class="demo-btn" onclick="showNotificationDemo()">
+          <div class="demo-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </div>
+          <span>Notifications</span>
+        </button>
+        <button class="demo-btn" onclick="showContextDemo()">
+          <div class="demo-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </div>
+          <span>Context Menu</span>
+        </button>
+        <button class="demo-btn" onclick="showInputDemo()">
+          <div class="demo-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+          </div>
+          <span>Input Dialog</span>
+        </button>
+        <button class="demo-btn" onclick="showProgressDemo()">
+          <div class="demo-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+          </div>
+          <span>Progress Bar</span>
+        </button>
+        <button class="demo-btn" onclick="showSkillCheckDemo()">
+          <div class="demo-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+            </svg>
+          </div>
+          <span>Skill Check</span>
+        </button>
+        <button class="demo-btn" onclick="showTextUIDemo()">
+          <div class="demo-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+          </div>
+          <span>Text UI</span>
+        </button>
+        <button class="demo-btn" onclick="showAlertDemo()">
+          <div class="demo-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+          <span>Alert Dialog</span>
+        </button>
+        <button class="demo-btn" onclick="showMenuDemo()">
+          <div class="demo-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+          </div>
+          <span>Menu List</span>
+        </button>
+      </div>
+      <div class="demo-info">
+        <div class="demo-info-item">
+          <h4>Liquid Glass</h4>
+          <p>iOS 26 inspired translucent panels</p>
+        </div>
+        <div class="demo-info-item">
+          <h4>Smooth Animations</h4>
+          <p>60fps fluid transitions</p>
+        </div>
+        <div class="demo-info-item">
+          <h4>Silver & Black</h4>
+          <p>Consistent color scheme</p>
+        </div>
+      </div>
     </div>
   </div>
 

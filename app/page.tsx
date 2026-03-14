@@ -64,9 +64,18 @@ export default function OxLibPreview() {
               <p className="text-xs text-white/40">Liquid Glass UI - iOS 26 Style</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.06]">
-            <div className="w-2 h-2 rounded-full bg-white/80 animate-pulse" />
-            <span className="text-xs text-white/50">Preview Mode</span>
+          <div className="flex items-center gap-3">
+            <a 
+              href="/ox_lib_ui/index.html" 
+              target="_blank"
+              className="px-4 py-2 rounded-full bg-white/[0.08] border border-white/[0.1] text-xs text-white/70 hover:bg-white/[0.12] hover:text-white/90 transition-all"
+            >
+              Open HTML Version
+            </a>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.06]">
+              <div className="w-2 h-2 rounded-full bg-white/80 animate-pulse" />
+              <span className="text-xs text-white/50">Preview Mode</span>
+            </div>
           </div>
         </div>
       </header>
