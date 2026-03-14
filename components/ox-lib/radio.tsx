@@ -269,13 +269,13 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
       </div>
 
       {/* Main Radio Panel */}
-      <div className="fixed inset-0 z-50 flex items-center justify-end pr-8">
-        {/* Backdrop */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 z-50 flex items-center justify-end pr-8 pointer-events-none">
+        {/* Invisible click area to close */}
+        <div className="absolute inset-0 pointer-events-auto" onClick={onClose} />
 
         {/* Radio Panel - Fixed Size */}
         <div
-          className="relative w-[300px] h-[480px] bg-[rgba(22,22,26,0.95)] border border-white/[0.08] rounded-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300 backdrop-blur-xl"
+          className="relative w-[300px] h-[500px] bg-[rgba(22,22,26,0.98)] border border-white/[0.08] rounded-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300 pointer-events-auto"
           style={{
             boxShadow: "0 25px 60px -12px rgba(0,0,0,0.6), 0 0 40px -10px rgba(255,255,255,0.05)",
           }}
@@ -290,7 +290,7 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
           >
             
             {/* Main Radio View - First Panel */}
-            <div className="w-[300px] h-full flex-shrink-0 flex flex-col">
+            <div className="w-[300px] h-[500px] flex-shrink-0 flex flex-col">
               {/* Header */}
               <div className="relative z-10 flex items-center gap-2 px-4 py-3.5 border-b border-white/[0.08]">
                 <div className="w-8 h-8 flex items-center justify-center bg-white/[0.08] rounded-lg">
@@ -454,7 +454,7 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
             </div>
 
             {/* Settings View - Second Panel */}
-            <div className="w-[300px] h-full flex-shrink-0 flex flex-col">
+            <div className="w-[300px] h-[500px] flex-shrink-0 flex flex-col">
               <div className="relative z-10 flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.08]">
                 <button
                   onClick={() => setActivePanel('main')}
@@ -598,7 +598,7 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
             </div>
 
             {/* Members View - Third Panel */}
-            <div className="w-[300px] h-full flex-shrink-0 flex flex-col">
+            <div className="w-[300px] h-[500px] flex-shrink-0 flex flex-col">
               <div className="relative z-10 flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.08]">
                 <button
                   onClick={() => setActivePanel('main')}
