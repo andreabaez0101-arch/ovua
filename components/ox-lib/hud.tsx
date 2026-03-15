@@ -27,124 +27,94 @@ const colorSchemes = {
   orange: { health: '#f97316', armor: '#fb923c', food: '#fbbf24', water: '#facc15', stamina: '#fcd34d', oxygen: '#fdba74', stress: '#f59e0b' }
 }
 
-// ============ STYLE 1: BARS (Horizontal) ============
+// ============ STYLE 1: BARS (Horizontal) - Compact ============
 function StatusBars({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
   return (
-    <div className={`flex items-center gap-2 px-2.5 py-1.5 bg-[rgba(18,18,22,0.9)] border border-white/[0.06] rounded-lg transition-all duration-300 ${critical ? 'animate-pulse border-red-500/40' : ''}`}>
-      <div className="w-5 h-5 flex items-center justify-center rounded" style={{ backgroundColor: `${color}15` }}>
-        <div style={{ color }} className="w-3.5 h-3.5">{icon}</div>
+    <div className={`flex items-center gap-1.5 px-2 py-1 bg-[rgba(18,18,22,0.9)] border border-white/[0.06] rounded-md transition-all duration-300 ${critical ? 'animate-pulse border-red-500/40' : ''}`}>
+      <div className="w-4 h-4 flex items-center justify-center" style={{ color }}>{icon}</div>
+      <div className="w-10 h-1 bg-white/[0.08] rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-500"
+          style={{ width: `${Math.max(0, Math.min(100, value))}%`, backgroundColor: color, boxShadow: `0 0 4px ${color}60` }}
+        />
       </div>
-      <div className="flex-1 min-w-[60px]">
-        <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
-          <div 
-            className="h-full rounded-full transition-all duration-500"
-            style={{ 
-              width: `${Math.max(0, Math.min(100, value))}%`,
-              background: `linear-gradient(90deg, ${color}80 0%, ${color} 100%)`,
-              boxShadow: `0 0 8px ${color}60`
-            }}
-          />
-        </div>
-      </div>
-      <span className="text-[10px] font-bold text-white/50 min-w-[28px] text-right tabular-nums">
-        {Math.round(value)}%
-      </span>
     </div>
   )
 }
 
-// ============ STYLE 2: BARS VERTICAL ============
+// ============ STYLE 2: BARS VERTICAL - Compact ============
 function StatusBarsVertical({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
   return (
-    <div className={`flex flex-col items-center gap-1.5 px-2 py-2 bg-[rgba(18,18,22,0.9)] border border-white/[0.06] rounded-lg ${critical ? 'animate-pulse border-red-500/40' : ''}`}>
-      <div className="w-5 h-5 flex items-center justify-center" style={{ color }}>{icon}</div>
-      <div className="w-1.5 h-10 bg-white/[0.06] rounded-full overflow-hidden flex flex-col-reverse">
-        <div 
-          className="w-full rounded-full transition-all duration-500"
-          style={{ 
-            height: `${value}%`,
-            backgroundColor: color,
-            boxShadow: `0 0 6px ${color}60`
-          }}
-        />
+    <div className={`flex flex-col items-center gap-1 px-1.5 py-1.5 bg-[rgba(18,18,22,0.9)] border border-white/[0.06] rounded-md ${critical ? 'animate-pulse border-red-500/40' : ''}`}>
+      <div className="w-3.5 h-3.5 flex items-center justify-center" style={{ color }}>{icon}</div>
+      <div className="w-1 h-6 bg-white/[0.08] rounded-full overflow-hidden flex flex-col-reverse">
+        <div className="w-full rounded-full transition-all duration-500" style={{ height: `${value}%`, backgroundColor: color }} />
       </div>
-      <span className="text-[9px] font-bold text-white/40 tabular-nums">{Math.round(value)}</span>
     </div>
   )
 }
 
-// ============ STYLE 3: CIRCLES OUTLINE ============
-function StatusCirclesOutline({ icon, value, color, label, critical, size = 'normal' }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean, size?: 'small' | 'normal' | 'large' }) {
-  const sizes = { small: { w: 'w-10 h-10', r: 16, sw: 3, icon: 'w-3 h-3' }, normal: { w: 'w-12 h-12', r: 20, sw: 3, icon: 'w-4 h-4' }, large: { w: 'w-14 h-14', r: 24, sw: 4, icon: 'w-5 h-5' } }
-  const s = sizes[size]
-  const circumference = 2 * Math.PI * s.r
+// ============ STYLE 3: CIRCLES OUTLINE - Compact ============
+function StatusCirclesOutline({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
+  const circumference = 2 * Math.PI * 14
   const strokeDashoffset = circumference - (value / 100) * circumference
 
   return (
-    <div className={`relative ${s.w} flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
+    <div className={`relative w-9 h-9 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
       <svg className="absolute inset-0 -rotate-90 w-full h-full">
-        <circle cx="50%" cy="50%" r={s.r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={s.sw} />
-        <circle cx="50%" cy="50%" r={s.r} fill="none" stroke={color} strokeWidth={s.sw} strokeLinecap="round"
+        <circle cx="50%" cy="50%" r="14" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2.5" />
+        <circle cx="50%" cy="50%" r="14" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round"
           strokeDasharray={circumference} strokeDashoffset={strokeDashoffset}
-          style={{ transition: 'stroke-dashoffset 0.5s ease', filter: `drop-shadow(0 0 6px ${color}80)` }}
+          style={{ transition: 'stroke-dashoffset 0.5s ease', filter: `drop-shadow(0 0 4px ${color}80)` }}
         />
       </svg>
-      <div className={s.icon} style={{ color }}>{icon}</div>
+      <div className="w-3.5 h-3.5" style={{ color }}>{icon}</div>
     </div>
   )
 }
 
-// ============ STYLE 4: CIRCLES FILL ============
+// ============ STYLE 4: CIRCLES FILL - Compact ============
 function StatusCirclesFill({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
   return (
-    <div className={`relative w-14 h-14 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
+    <div className={`relative w-9 h-9 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
       <div className="absolute inset-0 rounded-full overflow-hidden" style={{ background: `conic-gradient(${color} ${value * 3.6}deg, rgba(255,255,255,0.06) 0deg)` }} />
-      <div className="absolute inset-1 rounded-full bg-[rgba(18,18,22,0.95)]" />
-      <div className="relative flex flex-col items-center">
-        <div className="w-4 h-4" style={{ color }}>{icon}</div>
-        <span className="text-[9px] font-bold text-white/50 tabular-nums">{Math.round(value)}</span>
-      </div>
+      <div className="absolute inset-[3px] rounded-full bg-[rgba(18,18,22,0.95)]" />
+      <div className="relative w-3.5 h-3.5" style={{ color }}>{icon}</div>
     </div>
   )
 }
 
-// ============ STYLE 5: CIRCLES GLOW ============
+// ============ STYLE 5: CIRCLES GLOW - Compact ============
 function StatusCirclesGlow({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
-  const circumference = 2 * Math.PI * 22
+  const circumference = 2 * Math.PI * 14
   const strokeDashoffset = circumference - (value / 100) * circumference
 
   return (
-    <div className={`relative w-16 h-16 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
+    <div className={`relative w-9 h-9 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
       <div className="absolute inset-0 rounded-full" style={{ background: `radial-gradient(circle, ${color}20 0%, transparent 70%)` }} />
       <svg className="absolute inset-0 -rotate-90 w-full h-full">
-        <circle cx="50%" cy="50%" r="22" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
-        <circle cx="50%" cy="50%" r="22" fill="none" stroke={color} strokeWidth="4" strokeLinecap="round"
+        <circle cx="50%" cy="50%" r="14" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="2.5" />
+        <circle cx="50%" cy="50%" r="14" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round"
           strokeDasharray={circumference} strokeDashoffset={strokeDashoffset}
-          style={{ transition: 'stroke-dashoffset 0.5s ease', filter: `drop-shadow(0 0 10px ${color}) drop-shadow(0 0 20px ${color}60)` }}
+          style={{ transition: 'stroke-dashoffset 0.5s ease', filter: `drop-shadow(0 0 6px ${color}) drop-shadow(0 0 10px ${color}60)` }}
         />
       </svg>
-      <div className="relative flex flex-col items-center gap-0.5">
-        <div className="w-4 h-4" style={{ color, filter: `drop-shadow(0 0 4px ${color})` }}>{icon}</div>
-        <span className="text-[10px] font-bold tabular-nums" style={{ color }}>{Math.round(value)}</span>
-      </div>
+      <div className="w-3.5 h-3.5" style={{ color, filter: `drop-shadow(0 0 3px ${color})` }}>{icon}</div>
     </div>
   )
 }
 
-// ============ STYLE 6: PILLS ============
+// ============ STYLE 6: PILLS - Compact ============
 function StatusPills({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
-  const segments = 5
+  const segments = 4
   const filledSegments = Math.ceil((value / 100) * segments)
 
   return (
-    <div className={`flex items-center gap-2 px-3 py-2 bg-[rgba(18,18,22,0.9)] border border-white/[0.06] rounded-full ${critical ? 'animate-pulse' : ''}`}>
-      <div className="w-4 h-4" style={{ color }}>{icon}</div>
-      <div className="flex gap-1">
+    <div className={`flex items-center gap-1.5 px-2 py-1 bg-[rgba(18,18,22,0.9)] border border-white/[0.06] rounded-full ${critical ? 'animate-pulse' : ''}`}>
+      <div className="w-3.5 h-3.5" style={{ color }}>{icon}</div>
+      <div className="flex gap-0.5">
         {Array.from({ length: segments }).map((_, i) => (
-          <div 
-            key={i}
-            className="w-3 h-1.5 rounded-full transition-all duration-300"
-            style={{ backgroundColor: i < filledSegments ? color : 'rgba(255,255,255,0.1)', boxShadow: i < filledSegments ? `0 0 6px ${color}60` : 'none' }}
+          <div key={i} className="w-2 h-1 rounded-full transition-all duration-300"
+            style={{ backgroundColor: i < filledSegments ? color : 'rgba(255,255,255,0.1)' }}
           />
         ))}
       </div>
@@ -152,94 +122,80 @@ function StatusPills({ icon, value, color, label, critical }: { icon: React.Reac
   )
 }
 
-// ============ STYLE 7: MINIMAL ============
+// ============ STYLE 7: MINIMAL - Compact ============
 function StatusMinimal({ icon, value, color, critical }: { icon: React.ReactNode, value: number, color: string, critical?: boolean }) {
   return (
-    <div className={`flex items-center gap-1.5 ${critical ? 'animate-pulse' : ''}`}>
-      <div className="w-4 h-4" style={{ color }}>{icon}</div>
-      <span className="text-[11px] font-bold tabular-nums" style={{ color, textShadow: `0 0 8px ${color}60, 0 1px 2px rgba(0,0,0,0.8)` }}>
-        {Math.round(value)}
-      </span>
+    <div className={`flex items-center gap-1 ${critical ? 'animate-pulse' : ''}`}>
+      <div className="w-3.5 h-3.5" style={{ color }}>{icon}</div>
+      <span className="text-[10px] font-bold tabular-nums" style={{ color, textShadow: `0 0 6px ${color}60` }}>{Math.round(value)}</span>
     </div>
   )
 }
 
-// ============ STYLE 8: MODERN CARDS ============
+// ============ STYLE 8: MODERN CARDS - Compact ============
 function StatusModernCards({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
   return (
-    <div className={`flex flex-col items-center gap-1.5 px-3 py-2.5 bg-[rgba(18,18,22,0.85)] border border-white/[0.05] rounded-xl min-w-[70px] ${critical ? 'animate-pulse border-red-500/30' : ''}`}>
-      <div className="w-6 h-6 flex items-center justify-center rounded-lg" style={{ backgroundColor: `${color}20` }}>
-        <div style={{ color }} className="w-4 h-4">{icon}</div>
+    <div className={`flex items-center gap-1.5 px-2 py-1 bg-[rgba(18,18,22,0.85)] border border-white/[0.05] rounded-lg ${critical ? 'animate-pulse border-red-500/30' : ''}`}>
+      <div className="w-4 h-4 flex items-center justify-center rounded" style={{ backgroundColor: `${color}20` }}>
+        <div style={{ color }} className="w-3 h-3">{icon}</div>
       </div>
-      <div className="w-full h-1 bg-white/[0.06] rounded-full overflow-hidden">
-        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${value}%`, backgroundColor: color, boxShadow: `0 0 8px ${color}60` }} />
+      <div className="w-8 h-1 bg-white/[0.08] rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${value}%`, backgroundColor: color }} />
       </div>
-      <span className="text-[9px] font-semibold text-white/40 uppercase tracking-wide">{label}</span>
     </div>
   )
 }
 
-// ============ STYLE 9: COMPACT ============
+// ============ STYLE 9: COMPACT - Ultra Compact ============
 function StatusCompact({ icon, value, color, critical }: { icon: React.ReactNode, value: number, color: string, critical?: boolean }) {
   return (
-    <div className={`flex items-center gap-1 px-1.5 py-1 ${critical ? 'animate-pulse' : ''}`}>
-      <div className="w-3.5 h-3.5" style={{ color }}>{icon}</div>
-      <div className="w-8 h-1 bg-white/[0.08] rounded-full overflow-hidden">
+    <div className={`flex items-center gap-1 px-1 py-0.5 ${critical ? 'animate-pulse' : ''}`}>
+      <div className="w-3 h-3" style={{ color }}>{icon}</div>
+      <div className="w-6 h-[3px] bg-white/[0.08] rounded-full overflow-hidden">
         <div className="h-full rounded-full transition-all duration-300" style={{ width: `${value}%`, backgroundColor: color }} />
       </div>
     </div>
   )
 }
 
-// ============ STYLE 10: NEON ============
+// ============ STYLE 10: NEON - Compact ============
 function StatusNeon({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
   return (
-    <div className={`relative flex items-center gap-2.5 px-3 py-2 bg-black/70 border rounded-lg ${critical ? 'animate-pulse' : ''}`}
-      style={{ borderColor: `${color}50`, boxShadow: `0 0 15px ${color}30, inset 0 0 20px ${color}10` }}
+    <div className={`flex items-center gap-1.5 px-2 py-1 bg-black/70 border rounded-md ${critical ? 'animate-pulse' : ''}`}
+      style={{ borderColor: `${color}40`, boxShadow: `0 0 8px ${color}20` }}
     >
-      <div className="w-5 h-5 flex items-center justify-center" style={{ color, filter: `drop-shadow(0 0 6px ${color})` }}>{icon}</div>
-      <div className="flex-1 min-w-[50px]">
-        <div className="h-2 bg-black/40 rounded-full overflow-hidden border" style={{ borderColor: `${color}30` }}>
-          <div className="h-full rounded-full transition-all duration-300"
-            style={{ width: `${value}%`, background: `linear-gradient(90deg, ${color}60 0%, ${color} 100%)`, boxShadow: `0 0 10px ${color}, inset 0 0 5px rgba(255,255,255,0.3)` }}
-          />
-        </div>
+      <div className="w-3.5 h-3.5" style={{ color, filter: `drop-shadow(0 0 4px ${color})` }}>{icon}</div>
+      <div className="w-10 h-1 bg-black/40 rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-300"
+          style={{ width: `${value}%`, backgroundColor: color, boxShadow: `0 0 6px ${color}` }}
+        />
       </div>
-      <span className="text-[10px] font-bold tabular-nums" style={{ color, textShadow: `0 0 8px ${color}` }}>{Math.round(value)}%</span>
     </div>
   )
 }
 
-// ============ STYLE 11: GRADIENT ============
+// ============ STYLE 11: GRADIENT - Compact ============
 function StatusGradient({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
   return (
-    <div className={`flex items-center gap-2 px-3 py-2 rounded-xl ${critical ? 'animate-pulse' : ''}`}
-      style={{ background: `linear-gradient(135deg, ${color}15 0%, ${color}05 100%)`, border: `1px solid ${color}25` }}
+    <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md ${critical ? 'animate-pulse' : ''}`}
+      style={{ background: `linear-gradient(135deg, ${color}15 0%, ${color}05 100%)`, border: `1px solid ${color}20` }}
     >
-      <div className="w-5 h-5 flex items-center justify-center rounded-lg" style={{ backgroundColor: `${color}25` }}>
-        <div style={{ color }} className="w-3.5 h-3.5">{icon}</div>
+      <div className="w-3.5 h-3.5" style={{ color }}>{icon}</div>
+      <div className="w-10 h-1 bg-black/20 rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${value}%`, backgroundColor: color }} />
       </div>
-      <div className="flex-1 min-w-[55px]">
-        <div className="h-1.5 bg-black/20 rounded-full overflow-hidden">
-          <div className="h-full rounded-full transition-all duration-500"
-            style={{ width: `${value}%`, background: `linear-gradient(90deg, ${color}90 0%, ${color} 100%)` }}
-          />
-        </div>
-      </div>
-      <span className="text-[10px] font-semibold tabular-nums" style={{ color }}>{Math.round(value)}%</span>
     </div>
   )
 }
 
-// ============ STYLE 12: CLASSIC ============
+// ============ STYLE 12: CLASSIC - Compact ============
 function StatusClassic({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
   return (
-    <div className={`flex items-center gap-2 ${critical ? 'animate-pulse' : ''}`}>
-      <div className="w-4 h-4" style={{ color }}>{icon}</div>
-      <div className="w-20 h-3 bg-black/60 rounded-sm border border-white/10 overflow-hidden">
+    <div className={`flex items-center gap-1.5 ${critical ? 'animate-pulse' : ''}`}>
+      <div className="w-3.5 h-3.5" style={{ color }}>{icon}</div>
+      <div className="w-10 h-2 bg-black/60 rounded-sm border border-white/10 overflow-hidden">
         <div className="h-full transition-all duration-300" style={{ width: `${value}%`, backgroundColor: color }} />
       </div>
-      <span className="text-[10px] font-mono text-white/60 tabular-nums min-w-[32px]">{Math.round(value)}%</span>
     </div>
   )
 }
@@ -687,7 +643,7 @@ export function OxLibHUD() {
       </div>
 
       {/* Voice Indicator - Above status */}
-      <div className={`fixed ${statusPositionClass}`} style={{ bottom: isCircleStyle ? '120px' : '80px' }}>
+      <div className={`fixed ${statusPositionClass}`} style={{ bottom: '70px' }}>
         <VoiceIndicator range={voiceRange} talking={isTalking} style={settings.style} />
       </div>
 
