@@ -730,8 +730,14 @@ export function OxLibHUD() {
       {/* Settings Panel */}
       {showSettings && <HudSettingsPanel settings={settings} onUpdateSettings={setSettings} onClose={() => setShowSettings(false)} />}
 
-      {/* Settings hint */}
-      <div className="fixed bottom-2 left-1/2 -translate-x-1/2 text-[10px] text-white/20">Ctrl+H para configurar HUD</div>
+      {/* Settings Button - Clickable */}
+      <button 
+        onClick={() => setShowSettings(true)}
+        className="fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 bg-[rgba(18,18,22,0.9)] hover:bg-[rgba(30,30,38,0.95)] border border-white/[0.08] hover:border-white/[0.15] rounded-full transition-all pointer-events-auto cursor-pointer group"
+      >
+        <Settings className="w-4 h-4 text-white/40 group-hover:text-white/70 group-hover:rotate-90 transition-all duration-300" />
+        <span className="text-[11px] font-medium text-white/40 group-hover:text-white/70 transition-colors">Configurar HUD</span>
+      </button>
     </div>
   )
 }
