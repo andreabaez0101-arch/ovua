@@ -139,11 +139,15 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    -webkit-user-drag: none;
+    user-drag: none;
   }
   body {
     @apply text-foreground;
     background: transparent !important;
     background-color: transparent !important;
+    user-select: none;
+    -webkit-user-select: none;
   }
   /* FiveM specific - force transparency */
   html, body {

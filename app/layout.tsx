@@ -46,8 +46,6 @@ export default function RootLayout({
         className={`${inter.variable} ${geistMono.variable} font-sans antialiased`} 
         suppressHydrationWarning
         style={{ background: 'transparent' }}
-        onDragStart={(e) => e.preventDefault()}
-        onDrop={(e) => e.preventDefault()}
       >
         {children}
         <Analytics />
