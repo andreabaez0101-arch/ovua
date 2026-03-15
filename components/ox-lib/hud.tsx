@@ -53,52 +53,52 @@ function StatusBarsVertical({ icon, value, color, label, critical }: { icon: Rea
   )
 }
 
-// ============ STYLE 3: CIRCLES OUTLINE - Compact ============
+// ============ STYLE 3: CIRCLES OUTLINE - GTA Style ============
 function StatusCirclesOutline({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
-  const circumference = 2 * Math.PI * 14
+  const circumference = 2 * Math.PI * 16
   const strokeDashoffset = circumference - (value / 100) * circumference
 
   return (
-    <div className={`relative w-9 h-9 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
+    <div className={`relative w-10 h-10 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
       <svg className="absolute inset-0 -rotate-90 w-full h-full">
-        <circle cx="50%" cy="50%" r="14" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2.5" />
-        <circle cx="50%" cy="50%" r="14" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round"
+        <circle cx="50%" cy="50%" r="16" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3" />
+        <circle cx="50%" cy="50%" r="16" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round"
           strokeDasharray={circumference} strokeDashoffset={strokeDashoffset}
-          style={{ transition: 'stroke-dashoffset 0.5s ease', filter: `drop-shadow(0 0 4px ${color}80)` }}
+          style={{ transition: 'stroke-dashoffset 0.5s ease', filter: `drop-shadow(0 0 6px ${color}) drop-shadow(0 0 12px ${color}60)` }}
         />
       </svg>
-      <div className="w-3.5 h-3.5" style={{ color }}>{icon}</div>
+      <div className="w-4 h-4" style={{ color, filter: `drop-shadow(0 0 3px ${color}80)` }}>{icon}</div>
     </div>
   )
 }
 
-// ============ STYLE 4: CIRCLES FILL - Compact ============
+// ============ STYLE 4: CIRCLES FILL - GTA Style ============
 function StatusCirclesFill({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
   return (
-    <div className={`relative w-9 h-9 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
+    <div className={`relative w-10 h-10 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`} style={{ filter: `drop-shadow(0 0 6px ${color}60)` }}>
       <div className="absolute inset-0 rounded-full overflow-hidden" style={{ background: `conic-gradient(${color} ${value * 3.6}deg, rgba(255,255,255,0.06) 0deg)` }} />
-      <div className="absolute inset-[3px] rounded-full bg-[rgba(18,18,22,0.95)]" />
-      <div className="relative w-3.5 h-3.5" style={{ color }}>{icon}</div>
+      <div className="absolute inset-[3px] rounded-full bg-[rgba(12,12,16,0.95)]" />
+      <div className="relative w-4 h-4" style={{ color, filter: `drop-shadow(0 0 3px ${color}80)` }}>{icon}</div>
     </div>
   )
 }
 
-// ============ STYLE 5: CIRCLES GLOW - Compact ============
+// ============ STYLE 5: CIRCLES GLOW - GTA Style ============
 function StatusCirclesGlow({ icon, value, color, label, critical }: { icon: React.ReactNode, value: number, color: string, label: string, critical?: boolean }) {
-  const circumference = 2 * Math.PI * 14
+  const circumference = 2 * Math.PI * 16
   const strokeDashoffset = circumference - (value / 100) * circumference
 
   return (
-    <div className={`relative w-9 h-9 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
-      <div className="absolute inset-0 rounded-full" style={{ background: `radial-gradient(circle, ${color}20 0%, transparent 70%)` }} />
+    <div className={`relative w-10 h-10 flex items-center justify-center ${critical ? 'animate-pulse' : ''}`}>
+      <div className="absolute inset-0 rounded-full" style={{ background: `radial-gradient(circle, ${color}30 0%, transparent 70%)` }} />
       <svg className="absolute inset-0 -rotate-90 w-full h-full">
-        <circle cx="50%" cy="50%" r="14" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="2.5" />
-        <circle cx="50%" cy="50%" r="14" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round"
+        <circle cx="50%" cy="50%" r="16" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3" />
+        <circle cx="50%" cy="50%" r="16" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round"
           strokeDasharray={circumference} strokeDashoffset={strokeDashoffset}
-          style={{ transition: 'stroke-dashoffset 0.5s ease', filter: `drop-shadow(0 0 6px ${color}) drop-shadow(0 0 10px ${color}60)` }}
+          style={{ transition: 'stroke-dashoffset 0.5s ease', filter: `drop-shadow(0 0 8px ${color}) drop-shadow(0 0 16px ${color}80)` }}
         />
       </svg>
-      <div className="w-3.5 h-3.5" style={{ color, filter: `drop-shadow(0 0 3px ${color})` }}>{icon}</div>
+      <div className="w-4 h-4" style={{ color, filter: `drop-shadow(0 0 4px ${color})` }}>{icon}</div>
     </div>
   )
 }
@@ -200,37 +200,26 @@ function StatusClassic({ icon, value, color, label, critical }: { icon: React.Re
   )
 }
 
-// ============ VOICE INDICATOR ============
+// ============ VOICE INDICATOR - GTA Style ============
 function VoiceIndicator({ range, talking, style }: { range: 'whisper' | 'normal' | 'shout', talking: boolean, style: HudStyle }) {
   const levels = range === 'whisper' ? 1 : range === 'normal' ? 2 : 3
-  const color = talking ? '#22c55e' : 'rgba(255,255,255,0.3)'
-  
-  if (style === 'minimal' || style === 'compact') {
-    return (
-      <div className="flex items-center gap-1">
-        <Mic className="w-3.5 h-3.5" style={{ color }} />
-        <div className="flex items-end gap-[2px] h-3">
-          {[1, 2, 3].map((level) => (
-            <span key={level} className="w-[3px] rounded-sm transition-all duration-200"
-              style={{ height: level === 1 ? '5px' : level === 2 ? '8px' : '11px', backgroundColor: level <= levels ? '#22c55e' : 'rgba(255,255,255,0.15)', boxShadow: level <= levels && talking ? '0 0 6px #22c55e' : 'none' }}
-            />
-          ))}
-        </div>
-      </div>
-    )
-  }
+  const micColor = talking ? '#ef4444' : 'rgba(255,255,255,0.5)'
   
   return (
-    <div className={`flex items-center gap-2 px-3 py-2 bg-[rgba(18,18,22,0.9)] border rounded-lg ${talking ? 'border-green-500/30' : 'border-white/[0.06]'}`}>
-      <Mic className="w-4 h-4" style={{ color }} />
-      <div className="flex items-end gap-[3px] h-4">
+    <div className="flex items-center gap-2 px-2.5 py-1.5 bg-[rgba(12,12,16,0.9)] border border-white/[0.08] rounded-full">
+      <Mic className="w-3.5 h-3.5" style={{ color: micColor, filter: talking ? 'drop-shadow(0 0 4px #ef4444)' : 'none' }} />
+      <div className="flex items-end gap-[2px] h-3">
         {[1, 2, 3].map((level) => (
-          <span key={level} className="w-1 rounded-sm transition-all duration-200"
-            style={{ height: level === 1 ? '6px' : level === 2 ? '10px' : '14px', backgroundColor: level <= levels ? '#22c55e' : 'rgba(255,255,255,0.15)', boxShadow: level <= levels && talking ? '0 0 8px rgba(34,197,94,0.6)' : 'none' }}
+          <span key={level} className="w-[4px] rounded-[1px] transition-all duration-200"
+            style={{ 
+              height: level === 1 ? '6px' : level === 2 ? '9px' : '12px', 
+              backgroundColor: level <= levels ? '#22c55e' : 'rgba(255,255,255,0.12)',
+              boxShadow: level <= levels ? '0 0 4px rgba(34,197,94,0.5)' : 'none'
+            }}
           />
         ))}
       </div>
-      <span className="text-[9px] font-semibold text-white/40 uppercase">{range}</span>
+      <span className="text-[10px] font-semibold text-white/60 uppercase tracking-wide">{range}</span>
     </div>
   )
 }
@@ -632,19 +621,20 @@ export function OxLibHUD() {
   const isCircleStyle = settings.style.includes('circles') || settings.style === 'modern-cards'
   const isVertical = settings.style === 'bars-vertical'
   const statusPositionClass = settings.statusPosition === 'left' ? 'left-6' : 'right-6'
-  // All styles now display horizontally in a row
-  const statusFlexClass = isCircleStyle ? 'flex-row flex-wrap gap-2' : isVertical ? 'flex-row gap-1' : 'flex-row gap-2 items-center'
+  // All styles now display horizontally in a row - compact gaps
+  const statusFlexClass = isCircleStyle ? 'flex-row gap-1.5' : isVertical ? 'flex-row gap-1' : 'flex-row gap-1.5 items-center'
 
   return (
     <div className="fixed inset-0 pointer-events-none z-50" style={{ opacity: settings.opacity, transform: `scale(${settings.scale})`, transformOrigin: 'bottom left' }}>
-      {/* Status - Bottom Left/Right */}
-      <div className={`fixed bottom-6 ${statusPositionClass} flex ${statusFlexClass}`}>
-        {statusItems.map(item => renderStatus(item.icon, item.value, item.color, item.label, item.visible, item.critical))}
-      </div>
-
-      {/* Voice Indicator - Above status */}
-      <div className={`fixed ${statusPositionClass}`} style={{ bottom: '70px' }}>
+      {/* GTA Style Layout - Voice + Status stacked */}
+      <div className={`fixed bottom-6 ${statusPositionClass} flex flex-col items-start gap-2`}>
+        {/* Voice Indicator - Above status circles */}
         <VoiceIndicator range={voiceRange} talking={isTalking} style={settings.style} />
+        
+        {/* Status Icons - Horizontal row */}
+        <div className={`flex ${statusFlexClass}`}>
+          {statusItems.map(item => renderStatus(item.icon, item.value, item.color, item.label, item.visible, item.critical))}
+        </div>
       </div>
 
       {/* Money Display - Top Right */}
