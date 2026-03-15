@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radio UI - FiveM</title>
+  <title>dopa - radio script</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,24 +24,67 @@
 </head>
 <body style="background: transparent !important;" ondragstart="return false;" ondrop="return false;">
 
+  <!-- Radio Users List - Always Visible (Top Right) -->
+  <div id="users-list-overlay" class="users-list-overlay">
+    <div class="user-item leader">
+      <svg class="leader-icon" viewBox="0 0 24 24" fill="currentColor" style="color: #FFD700;">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+      </svg>
+      <span class="user-name" style="color: #FFD700;">John Doe</span>
+      <div class="audio-indicator hidden">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="user-item">
+      <span class="user-name">Maria Johnson</span>
+      <div class="audio-indicator hidden">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="user-item talking">
+      <span class="user-name">Carlos Martinez</span>
+      <div class="audio-indicator">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="user-item">
+      <span class="user-name">Ana Rodriguez</span>
+      <div class="audio-indicator hidden">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
   <!-- Radio UI Container -->
-  <div id="radio-container" class="radio-container">
+  <div id="radio-container" class="radio-container hidden">
     <div class="radio-panel">
+      <!-- Glass Reflection -->
+      <div class="glass-reflection"></div>
+      
       <!-- Header -->
       <div class="radio-header">
         <div class="radio-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M12 6V2m0 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>
             <path d="M6.34 6.34l-2.83-2.83m17 0l-2.83 2.83M4 12H2m20 0h-2"/>
-            <path d="M12 14v8"/>
-            <path d="M8 18h8"/>
+            <path d="M12 14v8M8 18h8"/>
           </svg>
         </div>
-        <div class="radio-title">
-          <span class="radio-label">COMUNICACIONES</span>
-          <h2>Radio</h2>
-        </div>
-        <button class="radio-close" onclick="Radio.close()">
+        <h2 class="radio-title">dopa - radio script</h2>
+        <button class="header-btn" id="members-btn" onclick="Radio.showMembers()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </button>
+        <button class="header-btn" id="settings-btn" onclick="Radio.showSettings()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+        <button class="header-btn" onclick="Radio.close()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 6L6 18M6 6l12 12"/>
           </svg>
@@ -51,7 +94,7 @@
       <!-- Channel Display -->
       <div class="channel-display">
         <div class="channel-status">
-          <span class="status-indicator active"></span>
+          <span class="status-dot"></span>
           <span class="status-text">Conectado</span>
         </div>
         <div class="channel-number" id="channel-number">001</div>
@@ -65,10 +108,7 @@
             <path d="M15 18l-6-6 6-6"/>
           </svg>
         </button>
-        <div class="channel-input-wrapper">
-          <input type="text" class="channel-input" id="channel-input" placeholder="001" maxlength="3" onkeypress="Radio.handleChannelInput(event)">
-          <span class="channel-input-hint">Ingresa canal</span>
-        </div>
+        <input type="text" class="channel-input" id="channel-input" placeholder="001" maxlength="3" onkeypress="Radio.handleChannelInput(event)">
         <button class="channel-btn" onclick="Radio.changeChannel(1)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M9 18l6-6-6-6"/>
@@ -97,7 +137,6 @@
 
       <!-- Quick Channels -->
       <div class="quick-channels">
-        <span class="quick-label">Canales Rapidos</span>
         <div class="quick-list">
           <button class="quick-btn active" onclick="Radio.quickChannel(1)">001</button>
           <button class="quick-btn" onclick="Radio.quickChannel(2)">002</button>
@@ -109,53 +148,20 @@
       <!-- Talk Button -->
       <div class="talk-section">
         <button class="talk-btn" id="talk-btn" onmousedown="Radio.startTalk()" onmouseup="Radio.endTalk()" ontouchstart="Radio.startTalk()" ontouchend="Radio.endTalk()">
-          <div class="talk-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-              <path d="M12 19v4"/>
-              <path d="M8 23h8"/>
-            </svg>
-          </div>
-          <span class="talk-text">Mantener para Hablar</span>
-          <span class="talk-key">[N]</span>
-        </button>
-      </div>
-
-      <!-- Members Online -->
-      <div class="members-section">
-        <div class="members-header">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          <div class="talk-btn-glow"></div>
+          <svg class="talk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <path d="M12 19v4M8 23h8"/>
           </svg>
-          <span>En este canal</span>
-          <span class="members-count" id="members-count">3</span>
-        </div>
-        <div class="members-list" id="members-list">
-          <div class="member-item">
-            <div class="member-avatar">JD</div>
-            <span class="member-name">John Doe</span>
-            <span class="member-status talking">Hablando</span>
-          </div>
-          <div class="member-item">
-            <div class="member-avatar">MJ</div>
-            <span class="member-name">Maria Johnson</span>
-            <span class="member-status">En linea</span>
-          </div>
-          <div class="member-item self">
-            <div class="member-avatar">TU</div>
-            <span class="member-name">Tu (ID: 15)</span>
-            <span class="member-status">En linea</span>
-          </div>
-        </div>
+          <span class="talk-text">Hablar</span>
+          <span class="talk-key">N</span>
+        </button>
       </div>
 
       <!-- Footer Actions -->
       <div class="radio-footer">
-        <button class="footer-btn" onclick="Radio.toggleMute()">
+        <button class="footer-btn" id="mute-btn" onclick="Radio.toggleMute()">
           <svg id="mute-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M11 5L6 9H2v6h4l5 4V5z"/>
             <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
@@ -170,16 +176,6 @@
           <span>Desconectar</span>
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- Demo Controls (for testing only) -->
-  <div class="demo-panel">
-    <h3>Radio UI Demo</h3>
-    <div class="demo-buttons">
-      <button class="demo-btn" onclick="Radio.toggle()">Toggle Radio</button>
-      <button class="demo-btn" onclick="Radio.simulateTalk()">Simular Hablar</button>
-      <button class="demo-btn" onclick="Radio.addMember()">Agregar Miembro</button>
     </div>
   </div>
 

@@ -1,6 +1,6 @@
 /* ========================================
-   Radio UI - JavaScript
-   For FiveM Server
+   dopa - radio script
+   JavaScript for FiveM Server
    ======================================== */
 
 const Radio = {
@@ -22,6 +22,7 @@ const Radio = {
   // Initialize
   init() {
     this.container = document.getElementById('radio-container');
+    this.usersOverlay = document.getElementById('users-list-overlay');
     this.channelDisplay = document.getElementById('channel-number');
     this.channelNameDisplay = document.getElementById('channel-name');
     this.channelInput = document.getElementById('channel-input');
@@ -29,8 +30,7 @@ const Radio = {
     this.volumeValue = document.getElementById('volume-value');
     this.volumeFill = document.getElementById('volume-fill');
     this.talkBtn = document.getElementById('talk-btn');
-    this.membersCount = document.getElementById('members-count');
-    this.membersList = document.getElementById('members-list');
+    this.muteBtn = document.getElementById('mute-btn');
     this.muteIcon = document.getElementById('mute-icon');
     this.muteText = document.getElementById('mute-text');
 
@@ -45,7 +45,7 @@ const Radio = {
     }
     if (data.members) {
       this.members = data.members;
-      this.renderMembers();
+      this.renderUsersOverlay();
     }
     
     this.container.classList.remove('hidden');
@@ -67,6 +67,16 @@ const Radio = {
     } else {
       this.open();
     }
+  },
+
+  // Show members panel (placeholder)
+  showMembers() {
+    console.log('Show members panel');
+  },
+
+  // Show settings panel (placeholder)
+  showSettings() {
+    console.log('Show settings panel');
   },
 
   // Change channel
@@ -145,14 +155,13 @@ const Radio = {
   // Toggle mute
   toggleMute() {
     this.isMuted = !this.isMuted;
-    const muteBtn = document.querySelector('.footer-btn:first-child');
     
     if (this.isMuted) {
-      muteBtn.classList.add('muted');
+      this.muteBtn.classList.add('muted');
       this.muteIcon.innerHTML = '<path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
       this.muteText.textContent = 'Silenciado';
     } else {
-      muteBtn.classList.remove('muted');
+      this.muteBtn.classList.remove('muted');
       this.muteIcon.innerHTML = '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>';
       this.muteText.textContent = 'Silenciar';
     }
@@ -166,21 +175,34 @@ const Radio = {
     this.sendNUI('radio:disconnect');
   },
 
-  // Render members list
-  renderMembers() {
-    this.membersList.innerHTML = '';
-    this.membersCount.textContent = this.members.length;
+  // Render users overlay (transparent list always visible)
+  renderUsersOverlay() {
+    this.usersOverlay.innerHTML = '';
     
     this.members.forEach(member => {
-      const initials = member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
       const item = document.createElement('div');
-      item.className = `member-item ${member.isSelf ? 'self' : ''}`;
-      item.innerHTML = `
-        <div class="member-avatar">${initials}</div>
-        <span class="member-name">${member.name}${member.isSelf ? ` (ID: ${member.id})` : ''}</span>
-        <span class="member-status ${member.talking ? 'talking' : ''}">${member.talking ? 'Hablando' : 'En linea'}</span>
-      `;
-      this.membersList.appendChild(item);
+      item.className = `user-item${member.isLeader ? ' leader' : ''}${member.talking ? ' talking' : ''}`;
+      
+      let html = '';
+      
+      // Leader icon
+      if (member.isLeader) {
+        html += `<svg class="leader-icon" viewBox="0 0 24 24" fill="currentColor" style="color: ${member.color || '#FFD700'};">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+        </svg>`;
+      }
+      
+      // Name
+      const nameColor = member.isLeader ? (member.color || '#FFD700') : 'rgba(255, 255, 255, 0.85)';
+      html += `<span class="user-name" style="color: ${nameColor};">${member.name}</span>`;
+      
+      // Audio indicator
+      html += `<div class="audio-indicator${member.talking ? '' : ' hidden'}">
+        <span></span><span></span><span></span>
+      </div>`;
+      
+      item.innerHTML = html;
+      this.usersOverlay.appendChild(item);
     });
   },
 
@@ -189,20 +211,20 @@ const Radio = {
     const member = this.members.find(m => m.id === memberId);
     if (member) {
       member.talking = isTalking;
-      this.renderMembers();
+      this.renderUsersOverlay();
     }
   },
 
   // Add member to channel
   addMember(member) {
     this.members.push(member);
-    this.renderMembers();
+    this.renderUsersOverlay();
   },
 
   // Remove member from channel
   removeMember(memberId) {
     this.members = this.members.filter(m => m.id !== memberId);
-    this.renderMembers();
+    this.renderUsersOverlay();
   },
 
   // Setup keyboard shortcuts
@@ -210,7 +232,7 @@ const Radio = {
     document.addEventListener('keydown', (e) => {
       // N key to talk
       if (e.key === 'n' || e.key === 'N') {
-        if (this.isOpen && !this.isTalking) {
+        if (!this.isTalking) {
           this.startTalk();
         }
       }
@@ -220,7 +242,7 @@ const Radio = {
         this.close();
       }
       
-      // Arrow keys to change channel
+      // Arrow keys to change channel (only when radio is open)
       if (this.isOpen && document.activeElement !== this.channelInput) {
         if (e.key === 'ArrowUp') {
           e.preventDefault();
@@ -257,26 +279,8 @@ const Radio = {
       this.startTalk();
       setTimeout(() => this.endTalk(), 2000);
     }
-  },
-
-  addMemberDemo() {
-    const names = ['Carlos Rodriguez', 'Ana Martinez', 'Luis Garcia', 'Sofia Lopez'];
-    const randomName = names[Math.floor(Math.random() * names.length)];
-    const randomId = Math.floor(Math.random() * 100) + 1;
-    
-    this.addMember({
-      id: randomId,
-      name: randomName,
-      talking: false,
-      isSelf: false
-    });
   }
 };
-
-// Helper function for FiveM
-function GetParentResourceName() {
-  return window.GetParentResourceName ? window.GetParentResourceName() : 'radio';
-}
 
 // NUI Message Handler
 window.addEventListener('message', (event) => {
@@ -297,7 +301,7 @@ window.addEventListener('message', (event) => {
       break;
     case 'updateMembers':
       Radio.members = data.members;
-      Radio.renderMembers();
+      Radio.renderUsersOverlay();
       break;
     case 'memberTalking':
       Radio.setMemberTalking(data.memberId, data.talking);
@@ -308,6 +312,12 @@ window.addEventListener('message', (event) => {
     case 'removeMember':
       Radio.removeMember(data.memberId);
       break;
+    case 'showUsersOverlay':
+      Radio.usersOverlay.classList.remove('hidden');
+      break;
+    case 'hideUsersOverlay':
+      Radio.usersOverlay.classList.add('hidden');
+      break;
   }
 });
 
@@ -315,11 +325,22 @@ window.addEventListener('message', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
   Radio.init();
   
-  // Demo: Set initial members
+  // Set initial demo members (shown in overlay)
   Radio.members = [
-    { id: 1, name: 'John Doe', talking: true, isSelf: false },
-    { id: 2, name: 'Maria Johnson', talking: false, isSelf: false },
-    { id: 15, name: 'Tu', talking: false, isSelf: true }
+    { id: 1, name: 'John Doe', talking: false, isSelf: false, isLeader: true, color: '#FFD700' },
+    { id: 2, name: 'Maria Johnson', talking: false, isSelf: false, isLeader: false },
+    { id: 3, name: 'Carlos Martinez', talking: true, isSelf: false, isLeader: false },
+    { id: 4, name: 'Ana Rodriguez', talking: false, isSelf: false, isLeader: false }
   ];
-  Radio.renderMembers();
+  Radio.renderUsersOverlay();
+  
+  // Simulate random talking
+  setInterval(() => {
+    Radio.members.forEach(member => {
+      if (!member.isSelf) {
+        member.talking = Math.random() > 0.85;
+      }
+    });
+    Radio.renderUsersOverlay();
+  }, 2000);
 });
