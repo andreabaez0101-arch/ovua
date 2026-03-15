@@ -209,47 +209,6 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
 
   return (
     <>
-      {/* Users Widget - Bottom Left Corner - Transparent Overlay Style */}
-      <div className="fixed bottom-4 left-4 z-40 pointer-events-none">
-        <div className="flex flex-col gap-0.5">
-          {members.map((member) => {
-            const MemberLeaderIcon = member.isLeader ? leaderIcons.crown : null
-            return (
-              <div
-                key={member.id}
-                className="flex items-center gap-1.5 transition-all duration-200"
-              >
-                {/* Leader icon */}
-                {member.isLeader && MemberLeaderIcon && (
-                  <MemberLeaderIcon 
-                    className="w-3 h-3 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" 
-                    style={{ color: member.color }}
-                  />
-                )}
-                {/* Name with text shadow for readability */}
-                <span
-                  className="text-[12px] font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] transition-colors duration-200"
-                  style={{ 
-                    color: member.isLeader ? member.color : "rgba(255,255,255,0.85)",
-                    textShadow: "0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.5)"
-                  }}
-                >
-                  {member.name}
-                </span>
-                {/* Audio indicator */}
-                {member.talking && (
-                  <div className="flex gap-[2px] items-end h-3 ml-1">
-                    <span className="w-[3px] h-1.5 bg-emerald-400 rounded-sm animate-[pulse_0.4s_ease-in-out_infinite] drop-shadow-[0_0_4px_rgba(52,211,153,0.8)]" />
-                    <span className="w-[3px] h-3 bg-emerald-400 rounded-sm animate-[pulse_0.4s_ease-in-out_infinite_0.1s] drop-shadow-[0_0_4px_rgba(52,211,153,0.8)]" />
-                    <span className="w-[3px] h-2 bg-emerald-400 rounded-sm animate-[pulse_0.4s_ease-in-out_infinite_0.2s] drop-shadow-[0_0_4px_rgba(52,211,153,0.8)]" />
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
       {/* Main Radio Panel */}
       <div className="fixed inset-0 z-50 flex items-center justify-end pr-8 pointer-events-none">
         {/* Invisible click area to close */}
