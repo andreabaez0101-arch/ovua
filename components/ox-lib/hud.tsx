@@ -676,7 +676,8 @@ export function OxLibHUD() {
   const isCircleStyle = settings.style.includes('circles') || settings.style === 'modern-cards'
   const isVertical = settings.style === 'bars-vertical'
   const statusPositionClass = settings.statusPosition === 'left' ? 'left-6' : 'right-6'
-  const statusFlexClass = isCircleStyle ? 'flex-row flex-wrap gap-2 max-w-[200px]' : isVertical ? 'flex-row gap-1' : 'flex-col gap-1.5'
+  // All styles now display horizontally in a row
+  const statusFlexClass = isCircleStyle ? 'flex-row flex-wrap gap-2' : isVertical ? 'flex-row gap-1' : 'flex-row gap-2 items-center'
 
   return (
     <div className="fixed inset-0 pointer-events-none z-50" style={{ opacity: settings.opacity, transform: `scale(${settings.scale})`, transformOrigin: 'bottom left' }}>
@@ -686,7 +687,7 @@ export function OxLibHUD() {
       </div>
 
       {/* Voice Indicator - Above status */}
-      <div className={`fixed ${statusPositionClass}`} style={{ bottom: isCircleStyle ? '160px' : isVertical ? '120px' : '240px' }}>
+      <div className={`fixed ${statusPositionClass}`} style={{ bottom: isCircleStyle ? '120px' : '80px' }}>
         <VoiceIndicator range={voiceRange} talking={isTalking} style={settings.style} />
       </div>
 
