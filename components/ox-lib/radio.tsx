@@ -251,7 +251,7 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
                   </svg>
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-sm font-semibold text-white/95">Radio</h2>
+                  <h2 className="text-sm font-semibold text-white/95">dopa - radio script</h2>
                 </div>
                 <button
                   onClick={() => setActivePanel('members')}
@@ -556,7 +556,7 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                <h2 className="text-sm font-semibold text-white/95">Usuarios en Radio</h2>
+                <h2 className="text-sm font-semibold text-white/95">Usuarios en Canal</h2>
                 <span className="ml-auto text-xs text-white/40 bg-white/[0.06] px-2 py-1 rounded-lg">{members.length}</span>
               </div>
 

@@ -46,7 +46,7 @@ export default function OxLibPreview() {
     { id: "textui", label: "Text UI", icon: iconSvgs.textui, action: () => setShowTextUI(true) },
     { id: "alert", label: "Alert Dialog", icon: iconSvgs.alert, action: () => setShowAlert(true) },
     { id: "menu", label: "Menu List", icon: iconSvgs.menu, action: () => setShowMenu(true) },
-    { id: "radio", label: "Radio UI", icon: iconSvgs.radio, action: () => setShowRadio(true) },
+    { id: "radio", label: "dopa - radio script", icon: iconSvgs.radio, action: () => setShowRadio(true) },
   ]
 
   return (
