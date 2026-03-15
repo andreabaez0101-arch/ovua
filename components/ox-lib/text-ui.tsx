@@ -54,7 +54,7 @@ export function OxLibTextUI({ onClose }: TextUIProps) {
 
       {/* Info Banner */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full 
-        bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl">
+        bg-[rgba(20,20,25,0.95)] border border-white/[0.08]">
         <span className="text-xs text-white/50">Text UI Preview - Interaction Hints</span>
       </div>
 

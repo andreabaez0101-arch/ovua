@@ -14,9 +14,15 @@
       background: transparent !important;
       background-color: transparent !important;
     }
+    /* Disable dragging globally */
+    * {
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
   </style>
 </head>
-<body style="background: transparent !important;">
+<body style="background: transparent !important;" ondragstart="return false;" ondrop="return false;">
 
   <!-- Radio UI Container -->
   <div id="radio-container" class="radio-container">

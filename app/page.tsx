@@ -106,7 +106,7 @@ export default function OxLibPreview() {
               className="group relative overflow-hidden rounded-2xl p-6 
                 bg-gradient-to-br from-white/[0.06] to-white/[0.02]
                 border border-white/[0.08] hover:border-white/[0.15]
-                backdrop-blur-xl shadow-lg
+                shadow-lg
                 transition-all duration-500 ease-out
                 hover:scale-[1.02] hover:shadow-2xl hover:shadow-white/[0.03]
                 active:scale-[0.98]"

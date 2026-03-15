@@ -65,7 +65,7 @@ export function OxLibContextMenu({ onClose }: ContextMenuProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center select-none" onClick={onClose}>
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-md ox-fade-in" />
+      <div className="absolute inset-0 bg-black/70 ox-fade-in" />
 
       {/* Menu */}
       <div 
@@ -76,9 +76,7 @@ export function OxLibContextMenu({ onClose }: ContextMenuProps) {
         <div 
           className="relative overflow-hidden rounded-2xl ox-border-shimmer"
           style={{
-            background: "linear-gradient(135deg, rgba(22, 22, 26, 0.92) 0%, rgba(14, 14, 18, 0.96) 100%)",
-            backdropFilter: "blur(24px)",
-            WebkitBackdropFilter: "blur(24px)",
+            background: "linear-gradient(135deg, rgba(22, 22, 26, 0.98) 0%, rgba(14, 14, 18, 0.99) 100%)",
             border: "1px solid rgba(192, 192, 192, 0.08)",
             boxShadow: `
               0 25px 60px -12px rgba(0, 0, 0, 0.7),

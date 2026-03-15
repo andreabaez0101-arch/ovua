@@ -41,8 +41,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={`${inter.variable} ${geistMono.variable} font-sans antialiased bg-[#0a0a0c]`} suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning style={{ background: 'transparent' }}>
+      <body 
+        className={`${inter.variable} ${geistMono.variable} font-sans antialiased`} 
+        suppressHydrationWarning
+        style={{ background: 'transparent' }}
+        onDragStart={(e) => e.preventDefault()}
+        onDrop={(e) => e.preventDefault()}
+      >
         {children}
         <Analytics />
       </body>
