@@ -210,7 +210,12 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
   return (
     <>
       {/* Main Radio Panel */}
-      <div className="fixed inset-0 z-50 flex items-center justify-end pr-8 pointer-events-none">
+      <div 
+        className="fixed inset-0 z-50 flex items-center justify-end pr-8 pointer-events-none"
+        onDragStart={(e) => e.preventDefault()}
+        onDrop={(e) => e.preventDefault()}
+        onDragOver={(e) => e.preventDefault()}
+      >
         {/* Invisible click area to close */}
         <div className="absolute inset-0 pointer-events-auto" onClick={onClose} />
 
@@ -219,7 +224,11 @@ export function OxLibRadio({ onClose }: OxLibRadioProps) {
           className="relative w-[300px] h-[500px] bg-[rgba(22,22,26,0.98)] border border-white/[0.08] rounded-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300 pointer-events-auto select-none"
           style={{
             boxShadow: "0 25px 60px -12px rgba(0,0,0,0.6), 0 0 40px -10px rgba(255,255,255,0.05)",
+            userSelect: "none",
+            WebkitUserSelect: "none",
           }}
+          draggable={false}
+          onDragStart={(e) => e.preventDefault()}
         >
           {/* Glass reflection */}
           <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/[0.06] to-transparent pointer-events-none rounded-t-2xl z-20" />
