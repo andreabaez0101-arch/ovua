@@ -12,6 +12,7 @@ import { OxLibAlertDialog } from "@/components/ox-lib/alert-dialog"
 import { OxLibMenu } from "@/components/ox-lib/menu"
 import { OxLibRadio } from "@/components/ox-lib/radio"
 import { RadioUsersList } from "@/components/ox-lib/radio-users-list"
+import { OxLibHUD } from "@/components/ox-lib/hud"
 
 const iconSvgs = {
   notifications: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>,
@@ -23,6 +24,7 @@ const iconSvgs = {
   alert: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>,
   menu: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>,
   radio: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6V2m0 4a4 4 0 100 8 4 4 0 000-8zM6.34 6.34l-2.83-2.83m17 0l-2.83 2.83M4 12H2m20 0h-2M12 14v8M8 18h8" /></svg>,
+  hud: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L6.75 2.906" /></svg>,
 }
 
 export default function OxLibPreview() {
@@ -36,6 +38,7 @@ export default function OxLibPreview() {
   const [showAlert, setShowAlert] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [showRadio, setShowRadio] = useState(false)
+  const [showHUD, setShowHUD] = useState(true)
 
   const buttons = [
     { id: "notifications", label: "Notifications", icon: iconSvgs.notifications, action: () => setShowNotification(true) },
@@ -47,6 +50,7 @@ export default function OxLibPreview() {
     { id: "alert", label: "Alert Dialog", icon: iconSvgs.alert, action: () => setShowAlert(true) },
     { id: "menu", label: "Menu List", icon: iconSvgs.menu, action: () => setShowMenu(true) },
     { id: "radio", label: "dopa - radio script", icon: iconSvgs.radio, action: () => setShowRadio(true) },
+    { id: "hud", label: "dopa - hud", icon: iconSvgs.hud, action: () => setShowHUD(!showHUD) },
   ]
 
   return (
@@ -172,6 +176,9 @@ export default function OxLibPreview() {
       
       {/* Radio Users List - Always visible, positioned top-right */}
       <RadioUsersList isVisible={true} />
+      
+      {/* HUD - Toggle visibility */}
+      {showHUD && <OxLibHUD />}
     </div>
   )
 }

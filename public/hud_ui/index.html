@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" style="background: transparent !important;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dopa - hud</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* FiveM NUI Transparency Fix */
+    html, body {
+      background: transparent !important;
+      background-color: transparent !important;
+    }
+    /* Disable dragging globally */
+    * {
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+  </style>
+</head>
+<body style="background: transparent !important;" ondragstart="return false;" ondrop="return false;">
+
+  <!-- Main HUD Container -->
+  <div class="hud-container">
+    
+    <!-- Status Bars (Bottom Right) -->
+    <div class="status-bars">
+      <!-- Health -->
+      <div class="status-item" data-type="health">
+        <div class="status-icon health">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <div class="status-bar-wrapper">
+          <div class="status-bar health-bar">
+            <div class="status-fill" style="width: 100%"></div>
+          </div>
+        </div>
+        <span class="status-value">100</span>
+      </div>
+
+      <!-- Armor -->
+      <div class="status-item" data-type="armor">
+        <div class="status-icon armor">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="status-bar-wrapper">
+          <div class="status-bar armor-bar">
+            <div class="status-fill" style="width: 75%"></div>
+          </div>
+        </div>
+        <span class="status-value">75</span>
+      </div>
+
+      <!-- Hunger -->
+      <div class="status-item" data-type="hunger">
+        <div class="status-icon hunger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+            <line x1="6" y1="1" x2="6" y2="4"/>
+            <line x1="10" y1="1" x2="10" y2="4"/>
+            <line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+        </div>
+        <div class="status-bar-wrapper">
+          <div class="status-bar hunger-bar">
+            <div class="status-fill" style="width: 85%"></div>
+          </div>
+        </div>
+        <span class="status-value">85</span>
+      </div>
+
+      <!-- Thirst -->
+      <div class="status-item" data-type="thirst">
+        <div class="status-icon thirst">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+          </svg>
+        </div>
+        <div class="status-bar-wrapper">
+          <div class="status-bar thirst-bar">
+            <div class="status-fill" style="width: 60%"></div>
+          </div>
+        </div>
+        <span class="status-value">60</span>
+      </div>
+
+      <!-- Stamina -->
+      <div class="status-item" data-type="stamina">
+        <div class="status-icon stamina">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+        <div class="status-bar-wrapper">
+          <div class="status-bar stamina-bar">
+            <div class="status-fill" style="width: 100%"></div>
+          </div>
+        </div>
+        <span class="status-value">100</span>
+      </div>
+
+      <!-- Oxygen (Hidden by default, shows when underwater) -->
+      <div class="status-item hidden" data-type="oxygen">
+        <div class="status-icon oxygen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <div class="status-bar-wrapper">
+          <div class="status-bar oxygen-bar">
+            <div class="status-fill" style="width: 100%"></div>
+          </div>
+        </div>
+        <span class="status-value">100</span>
+      </div>
+
+      <!-- Stress (Hidden by default, shows when stressed) -->
+      <div class="status-item hidden" data-type="stress">
+        <div class="status-icon stress">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+            <circle cx="8" cy="10" r="1"/>
+            <circle cx="16" cy="10" r="1"/>
+            <path d="M12 14c-2 0-3.5 1-4 2h8c-.5-1-2-2-4-2z"/>
+          </svg>
+        </div>
+        <div class="status-bar-wrapper">
+          <div class="status-bar stress-bar">
+            <div class="status-fill" style="width: 0%"></div>
+          </div>
+        </div>
+        <span class="status-value">0</span>
+      </div>
+    </div>
+
+    <!-- Money Display (Top Right) -->
+    <div class="money-display">
+      <div class="money-item cash">
+        <div class="money-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <span class="money-value" id="cash-value">$12,500</span>
+      </div>
+      <div class="money-item bank">
+        <div class="money-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+            <line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+        </div>
+        <span class="money-value" id="bank-value">$85,420</span>
+      </div>
+    </div>
+
+    <!-- Player Info (Top Left) -->
+    <div class="player-info">
+      <div class="player-id">
+        <span class="id-label">ID</span>
+        <span class="id-value">156</span>
+      </div>
+      <div class="server-info">
+        <span class="server-name">dopa server</span>
+        <span class="player-count">128/256</span>
+      </div>
+    </div>
+
+    <!-- Voice Indicator (Bottom Left) -->
+    <div class="voice-indicator">
+      <div class="voice-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="23"/>
+          <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+      </div>
+      <div class="voice-bars">
+        <span class="voice-bar" data-level="1"></span>
+        <span class="voice-bar" data-level="2"></span>
+        <span class="voice-bar" data-level="3"></span>
+      </div>
+      <span class="voice-mode">Normal</span>
+    </div>
+
+    <!-- Speedometer (Bottom Center) -->
+    <div class="speedometer hidden">
+      <div class="speed-display">
+        <span class="speed-value">0</span>
+        <span class="speed-unit">KM/H</span>
+      </div>
+      <div class="vehicle-info">
+        <div class="fuel-bar">
+          <div class="fuel-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 22V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/>
+              <path d="M15 22V10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4"/>
+              <rect x="5" y="10" width="6" height="4" rx="1"/>
+            </svg>
+          </div>
+          <div class="fuel-track">
+            <div class="fuel-fill" style="width: 75%"></div>
+          </div>
+          <span class="fuel-value">75%</span>
+        </div>
+        <div class="gear-indicator">
+          <span class="gear-label">GEAR</span>
+          <span class="gear-value">D</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compass (Top Center) -->
+    <div class="compass">
+      <div class="compass-inner">
+        <span class="compass-direction" data-dir="N">N</span>
+        <span class="compass-direction" data-dir="NE">NE</span>
+        <span class="compass-direction" data-dir="E">E</span>
+        <span class="compass-direction" data-dir="SE">SE</span>
+        <span class="compass-direction" data-dir="S">S</span>
+        <span class="compass-direction" data-dir="SW">SW</span>
+        <span class="compass-direction" data-dir="W">W</span>
+        <span class="compass-direction" data-dir="NW">NW</span>
+      </div>
+      <div class="compass-pointer"></div>
+      <span class="street-name">Vinewood Blvd</span>
+    </div>
+
+    <!-- Notification Area (Top Right Below Money) -->
+    <div class="notifications" id="notifications"></div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
